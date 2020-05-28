@@ -16,7 +16,7 @@ import javax.persistence.Id;
  * @author Romain
  */
 @Entity
-public class Employe implements Serializable {
+public class Consultation implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,10 +41,10 @@ public class Employe implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Employe)) {
+        if (!(object instanceof Consultation)) {
             return false;
         }
-        Employe other = (Employe) object;
+        Consultation other = (Consultation) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -53,7 +53,7 @@ public class Employe implements Serializable {
 
     @Override
     public String toString() {
-        return "Metiers.Employe[ id=" + id + " ]";
+        return "Metiers.Voyance[ id=" + id + " ]";
     }
     
 }

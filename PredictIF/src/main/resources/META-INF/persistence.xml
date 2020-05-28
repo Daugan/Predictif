@@ -3,12 +3,10 @@
   <persistence-unit name="PredictIF_PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>Metiers.Modeles.Client</class>
-    <class>Metiers.Modeles.Voyance</class>
-    <class>Metiers.Modeles.Employe</class>
     <class>Metiers.Modeles.Medium</class>
-    <class>Metiers.Modeles.Cartomencien</class>
     <class>Metiers.Modeles.ProfilAstral</class>
-    <class>Metiers.Modeles.Astrologue</class>
+    <class>Metiers.Modeles.Employee</class>
+    <class>Metiers.Modeles.Consultation</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/PredictIF"/>
       <property name="javax.persistence.jdbc.user" value="insa"/>
