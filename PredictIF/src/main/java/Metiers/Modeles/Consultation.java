@@ -6,10 +6,14 @@
 package Metiers.Modeles;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -22,6 +26,29 @@ public class Consultation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String comment;
+    @Temporal(TemporalType.DATE)
+    private Date hourAskConsultation;
+    @Temporal(TemporalType.DATE)
+    private Date hourBeginConsultation;
+    @Temporal(TemporalType.DATE)
+    private Date hourEndConsultation;
+    
+    @ManyToOne
+    private Client client;
+    @ManyToOne
+    private Medium medium;
+    @ManyToOne
+    private Employee employee;
+
+    public Consultation(Client client) {
+        this.hourAskConsultation = new Date();
+        this.client = client;
+    }
+    
+    public Consultation()
+    {
+    }
 
     public Long getId() {
         return id;
@@ -30,6 +57,66 @@ public class Consultation implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Date getHourAskConsultation() {
+        return hourAskConsultation;
+    }
+
+    public void setHourAskConsultation(Date hourAskConsultation) {
+        this.hourAskConsultation = hourAskConsultation;
+    }
+
+    public Date getHourBeginConsultation() {
+        return hourBeginConsultation;
+    }
+
+    public void setHourBeginConsultation(Date hourBeginConsultation) {
+        this.hourBeginConsultation = hourBeginConsultation;
+    }
+
+    public Date getHourEndConsultation() {
+        return hourEndConsultation;
+    }
+
+    public void setHourEndConsultation(Date hourEndConsultation) {
+        this.hourEndConsultation = hourEndConsultation;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Medium getMedium() {
+        return medium;
+    }
+
+    public void setMedium(Medium medium) {
+        this.medium = medium;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    
+    
+    
 
     @Override
     public int hashCode() {
@@ -53,7 +140,12 @@ public class Consultation implements Serializable {
 
     @Override
     public String toString() {
-        return "Metiers.Voyance[ id=" + id + " ]";
+        String res = "Metiers.Modeles.Consultation[ id=" + id + " ]\n";
+        res += "comment : " + this.getComment() + "\n";
+        res += "hour ask : " + this.getHourAskConsultation().toString() + "\n";
+        res += "hour begin: " + this.getHourBeginConsultation().toString() + "\n";
+        res += "hour end : " + this.getHourEndConsultation().toString() + "\n";
+        return res;
     }
     
 }

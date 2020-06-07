@@ -45,8 +45,9 @@ public class ClientDao {
     
     public Client find(String mail)
     {
-        String req = "select c from Client c where c.mail = '" + mail + "'";
+        String req = "select c from Client c where c.mail = :mail";
         TypedQuery<Client> query = JpaUtil.obtenirContextePersistance().createQuery(req, Client.class);
+        query.setParameter("mail", mail);
         List<Client> clients = query.getResultList();
         Client result = null;
         if(!clients.isEmpty())

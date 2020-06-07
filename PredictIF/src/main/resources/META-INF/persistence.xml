@@ -7,6 +7,9 @@
     <class>Metiers.Modeles.ProfilAstral</class>
     <class>Metiers.Modeles.Employee</class>
     <class>Metiers.Modeles.Consultation</class>
+    <class>Metiers.Modeles.Spirite</class>
+    <class>Metiers.Modeles.Cartomencien</class>
+    <class>Metiers.Modeles.Astrologue</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/PredictIF"/>
       <property name="javax.persistence.jdbc.user" value="insa"/>

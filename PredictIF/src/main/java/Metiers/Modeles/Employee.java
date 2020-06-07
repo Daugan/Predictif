@@ -5,6 +5,7 @@
  */
 package Metiers.Modeles;
 
+import Util.Gender;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -34,6 +35,8 @@ public class Employee implements Serializable {
     private String address;
     @Temporal(TemporalType.DATE)
     private Date birthDate;
+    private boolean disponibility;
+    protected Gender gender;
     
     //empty constructor
     public Employee()
@@ -41,7 +44,7 @@ public class Employee implements Serializable {
     }
     
     //constructor
-    public Employee(String firstname, String lastname, String mail, String password, String address, Date birthDate)
+    public Employee(String firstname, String lastname, String mail, String password, String address, Date birthDate, Gender gender, boolean disponibility)
     {
         this.firstName = firstname;
         this.lastName = lastname;
@@ -49,6 +52,8 @@ public class Employee implements Serializable {
         this.password = password;
         this.address = address;
         this.birthDate = birthDate;
+        this.gender = gender;
+        this.disponibility = disponibility;
     }
     
     //getters and setters
@@ -119,6 +124,22 @@ public class Employee implements Serializable {
     void setBirthDate(Date birthDate)
     {
         this.birthDate = birthDate;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender geder) {
+        this.gender = gender;
+    }
+
+    public boolean isDisponibility() {
+        return disponibility;
+    }
+
+    public void setDisponibility(boolean disponibility) {
+        this.disponibility = disponibility;
     }
     
     //override for hashcode, equals and string

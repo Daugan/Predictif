@@ -6,12 +6,17 @@
 package Metiers.Modeles;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -39,6 +44,18 @@ public class Client implements Serializable {
     private int cp;
     private boolean disponibility;
     
+    public enum Civilite 
+    {
+        M, MME
+    }
+    protected Civilite civilite;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    private ProfilAstral profilAstral;
+    
+    @OneToMany(mappedBy="client")
+    private List<Consultation> consultations;
+    
     //empty constructor
     public Client()
     {
@@ -46,7 +63,7 @@ public class Client implements Serializable {
     
     //constructor
 
-    public Client(String firstName, String lastName, String mail, String password, String phone, Date birthDate, String street, String city, int cp, boolean disponibility) {
+    public Client(String firstName, String lastName, String mail, String password, String phone, Date birthDate, String street, String city, int cp, Civilite civilite, boolean disponibility) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mail = mail;
@@ -56,102 +73,135 @@ public class Client implements Serializable {
         this.street = street;
         this.city = city;
         this.cp = cp;
+        this.civilite = civilite;
         this.disponibility = disponibility;
+        this.consultations = new ArrayList<Consultation>();
     }
     
-    
-    //getters and setters
+    public void addConsultation(Consultation c)
+    {
+        this.consultations.add(c);
+        if(c.getClient() != this)
+        {
+            c.setClient(this);
+        }
+    }
 
     public Long getId() {
         return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public int getCp() {
-        return cp;
-    }
-
-    public boolean isDisponibility() {
-        return disponibility;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
     }
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     public void setCity(String city) {
         this.city = city;
     }
 
+    public int getCp() {
+        return cp;
+    }
+
     public void setCp(int cp) {
         this.cp = cp;
     }
 
+    public Civilite getCivilite() {
+        return civilite;
+    }
+
+    public void setCivilite(Civilite civilite) {
+        this.civilite = civilite;
+    }
+
+    public boolean isDisponibility() {
+        return disponibility;
+    }
+
+    //getters and setters
     public void setDisponibility(boolean disponibility) {
         this.disponibility = disponibility;
     }
     
-    //override for hashcode, equals and string
+    public ProfilAstral getProfilAstral() {
+        return profilAstral;
+    }
 
+    public void setProfilAstral(ProfilAstral profilAstral) {
+        this.profilAstral = profilAstral;
+    }
+
+    public List<Consultation> getConsultations() {
+        return consultations;
+    }
+
+    public void setConsultations(List<Consultation> consultations) {
+        this.consultations = consultations;
+    }
+    
+
+    //override for hashcode, equals and string
     @Override
     public int hashCode() {
         int hash = 0;

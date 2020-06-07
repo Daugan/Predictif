@@ -23,7 +23,7 @@ public class ProfilAstral implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String zodiacSymbol;
-    private String chinesSign;
+    private String chineseSign;
     private String totemAnimal;
     private String luckyColor;
     
@@ -33,10 +33,10 @@ public class ProfilAstral implements Serializable {
     }
     
     //constructor
-    public ProfilAstral(String zodiacSymbol, String chinesSign, String totemAnimal, String luckyColor)
+    public ProfilAstral(String zodiacSymbol, String chineseSign, String totemAnimal, String luckyColor)
     {
         this.zodiacSymbol = zodiacSymbol;
-        this.chinesSign = chinesSign;
+        this.chineseSign = chineseSign;
         this.totemAnimal = totemAnimal;
         this.luckyColor = luckyColor;
     }
@@ -59,12 +59,12 @@ public class ProfilAstral implements Serializable {
         this.zodiacSymbol = zodiacSymbol;
     }
     
-    public String getChinesSign() {
-        return this.chinesSign;
+    public String getChineseSign() {
+        return this.chineseSign;
     }
 
-    public void setChinesSign(String chinesSign) {
-        this.chinesSign = chinesSign;
+    public void setChinesSign(String chineseSign) {
+        this.chineseSign = chineseSign;
     }
     
     public String getTotemAnimal() {
@@ -107,7 +107,12 @@ public class ProfilAstral implements Serializable {
 
     @Override
     public String toString() {
-        return "Metiers.Modeles.ProfilAstral[ id=" + id + " ]";
+        String res = "Metiers.Modeles.ProfilAstral[ id=" + id + " ]\n";
+        res += "Chinese sign : " + this.getChineseSign() + "\n";
+        res += "Lucky color : " + this.getLuckyColor() + "\n";
+        res += "Animal totem : " + this.getTotemAnimal() + "\n";
+        res += "Zodiac symbol : " + this.getZodiacSymbol() + "\n";
+        return res;
     }
     
 }

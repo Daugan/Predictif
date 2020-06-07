@@ -7,6 +7,7 @@ package Dao;
 
 import Metiers.Modeles.Client;
 import Metiers.Modeles.Employee;
+import Util.Gender;
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -39,15 +40,31 @@ public class EmployeeDao {
     
     public List<Employee> findAll()
     {
-        String req = "select c from Employe c order by c.lastname desc";
+        String req = "select c from Employee c order by c.lastname desc";
         Query query = JpaUtil.obtenirContextePersistance().createQuery(req);
         return (List<Employee>)query.getResultList();
     }
     
     public Employee find(String mail)
     {
-        String req = "select c from Employe c where c.mail = '" + mail + "'";
+        String req = "select c from Employee c where c.mail = :mail";
         TypedQuery<Employee> query = JpaUtil.obtenirContextePersistance().createQuery(req, Employee.class);
+        query.setParameter("mail", mail);
+        List<Employee> employees = query.getResultList();
+        Employee result = null;
+        if(!employees.isEmpty())
+        {
+            result = employees.get(0);
+        }
+        return result;
+    }
+    
+    public Employee findAvailable(Gender gender)
+    {
+        String req = "select c from Employee c where c.disponibility = :dispo and c.gender = :gender";
+        TypedQuery<Employee> query = JpaUtil.obtenirContextePersistance().createQuery(req, Employee.class);
+        query.setParameter("dispo", true);
+        query.setParameter("gender", gender);
         List<Employee> employees = query.getResultList();
         Employee result = null;
         if(!employees.isEmpty())
