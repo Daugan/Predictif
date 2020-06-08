@@ -11,7 +11,7 @@ import Dao.EmployeeDao;
 import Dao.JpaUtil;
 import Dao.MediumDao;
 import Metiers.Modeles.Astrologue;
-import Metiers.Modeles.Cartomencien;
+import Metiers.Modeles.Cartomancien;
 import Metiers.Modeles.Client;
 import Metiers.Modeles.Consultation;
 import Metiers.Modeles.Employee;
@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -50,24 +51,18 @@ public class Service {
         clients.add(new Client("Carmen", "Prévot", "carmen@gmail.com", "1234", "0751895860", Date.from(LocalDate.of(1997,11,16).atStartOfDay(ZoneId.systemDefault()).toInstant()), "43 route de genas", "Villeurbanne", 69100, Client.Civilite.MME, true));
         
         //employees
-        Employee employee1 = new Employee("Mathieu", "Maranzana", "mathieu@gmail.com", "1234", "25 rue de l'étoile, Lyon", Date.from(LocalDate.of(1896, 01, 01).atStartOfDay(ZoneId.systemDefault()).toInstant()), Gender.M, true);
-        Employee employee2 = new Employee("Frédérique", "Biennier", "frederique@gmail.com", "1234", "1 route éléctrique, Paris", Date.from(LocalDate.of(1760, 01, 01).atStartOfDay(ZoneId.systemDefault()).toInstant()), Gender.F, true);
+        Employee employee1 = new Employee("Mathieu", "Maranzana", "mathieu@gmail.com", "1234", "25 rue de l'étoile, Lyon", Date.from(LocalDate.of(1896, 01, 01).atStartOfDay(ZoneId.systemDefault()).toInstant()), "0651879852", Gender.M, true);
+        Employee employee2 = new Employee("Frédérique", "Biennier", "frederique@gmail.com", "1234", "1 route éléctrique, Paris", Date.from(LocalDate.of(1760, 01, 01).atStartOfDay(ZoneId.systemDefault()).toInstant()), "0745452154", Gender.F, true);
         
         //mediums
         List<Medium> mediums = new ArrayList<Medium>();
-        mediums.add(new Medium("Madame Irma", "Medium de grande renom", Gender.F));
-        mediums.add(new Medium("Madame Pristina", "Medium des balkans", Gender.F));
-        mediums.add(new Cartomencien("Monsieur Lebar", "Cartomencien depuis l'age de 8 ans", Gender.M));
+        mediums.add(new Cartomancien("Madame Irma", "Medium de grande renom", Gender.F));
+        mediums.add(new Cartomancien("Madame Pristina", "Medium des balkans", Gender.F));
+        mediums.add(new Cartomancien("Monsieur Lebar", "Cartomencien depuis l'age de 8 ans", Gender.M));
         mediums.add(new Astrologue("Monsieur Gripay", "Astrologue passionné par la grande ours", Gender.M, "INSA de Lyon", "Promo 51"));
         mediums.add(new Spirite("Madame Tchounik", "Aime le sprite", Gender.F, "Table de Ouija"));
         
         //consultations
-        /*List<Consultation> consultations = new ArrayList<Consultation>();
-        consultations.add(new Consultation(clients.get(0)));
-        consultations.add(new Consultation(clients.get(0)));
-        consultations.add(new Consultation(clients.get(0)));
-        consultations.add(new Consultation(clients.get(1)));*/
-        
         
         try
         {
@@ -88,12 +83,9 @@ public class Service {
             for(Medium m : mediums)
             {
                 mediumdao.create(m);
+                System.out.println("id : " + m.getId());
             }
-            
-            /*for(Consultation c : consultations)
-            {
-                consultationdao.create(c);
-            }*/
+
             
             JpaUtil.validerTransaction();
             
@@ -102,7 +94,6 @@ public class Service {
         catch(Exception ex)
         {
             JpaUtil.annulerTransaction();
-            ex.printStackTrace(); 
         }
         finally
         {
@@ -269,7 +260,7 @@ public class Service {
             
             if(employee != null)
             {
-                if(employee.getPassword().equals(password))
+                if(!employee.getPassword().equals(password))
                 {
                     employee = null;
                 }
@@ -328,8 +319,8 @@ public class Service {
         EmployeeDao employeedao = new EmployeeDao();
         ConsultationDao consultationdao = new ConsultationDao();
         
-        Medium medium;
-        Employee employee;
+        Medium medium = null;
+        Employee employee = null;
         Consultation consultation = new Consultation(client);
         client.addConsultation(consultation);
         
@@ -339,7 +330,7 @@ public class Service {
         {
             medium = mediumdao.find(Long.valueOf(idMedium));
             employee = employeedao.findAvailable(medium.getGender());
-            if(employee != null)
+            if(employee != null && medium != null)
             {
                 consultation.setMedium(medium);
                 consultation.setEmployee(employee);
@@ -365,6 +356,11 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         
+        if(res)
+        {
+            String msg = "Bonjour " + employee.getFirstName() + ". Consultation requise pour " + client.getCivilite() + " " + client.getFirstName() + " " + client.getLastName() + ". Médium à incarner : " + medium.getGender() + " " + medium.getDenomination();
+            Message.envoyerNotification(employee.getPhone(), msg);
+        }
         
         return res;
     }
@@ -372,60 +368,253 @@ public class Service {
     /**
      * begin a consultation
      * @param employee employee concerned by this consultation
-     * @return void
+     * @return boolean True if update worked, false either
     */
-    public void beginConsultation(Employee employee)
+    public boolean beginConsultation(Employee employee)
     {
-        //TODO : set the consultation status as : STARTED
-        //       update bdd field => date debut heure voyance
+        boolean res = false;
+        ConsultationDao consultationdao = new ConsultationDao();
+        
+        Consultation consultation = null;
+        JpaUtil.creerContextePersistance();
+        
+        try
+        {
+            consultation = consultationdao.findCurrent(employee);
+            if(consultation != null)
+            {
+                if(consultation.getHourBeginConsultation() == null)
+                {
+                    consultation.setHourBeginConsultation(new Date());
+
+                    JpaUtil.ouvrirTransaction();
+
+                    consultationdao.modify(consultation);
+
+                    JpaUtil.validerTransaction();
+
+                    res = true;   
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            JpaUtil.annulerTransaction();
+        }
+        finally
+        {
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        if(res)
+        {
+            String msg = "Bonjour " + consultation.getClient().getFirstName() + ". J’ai bien reçu votre demande de consultation du " + consultation.getHourAskConsultation().toString() + ". Vous pouvez dès à présent me contacter au " + consultation.getEmployee().getPhone() + ".  A tout de suite ! Médiumiquement vôtre, " + consultation.getMedium().getGender() + " " + consultation.getMedium().getDenomination();
+            Message.envoyerNotification(consultation.getClient().getPhone(), msg);
+        }
+        
+        return res;
     }
     
     /**
      * End a consultation
      * @param employee employee concerned by this consultation
-     * @return void
+     * @param comment comment of the consultation
+     * @return boolean True if update worked, false either
     */
-    public void EndConsultation(Employee employee)
+    public boolean endConsultation(Employee employee, String comment)
     {
-        //TODO : set the consultation status as : ENDED
-        //      update bdd field => date fin heure voyance
+        boolean res = false;
+        EmployeeDao employeedao = new EmployeeDao();
+        ConsultationDao consultationdao = new ConsultationDao();
+        
+        JpaUtil.creerContextePersistance();
+        
+        try
+        {
+            Consultation consultation = consultationdao.findCurrent(employee);
+            if(consultation != null)
+            {
+                if(consultation.getHourBeginConsultation() != null && consultation.getHourEndConsultation()== null)
+                {
+                    consultation.setHourEndConsultation(new Date());
+                    consultation.setComment(comment);
+                    employee.setDisponibility(true);
+
+                    JpaUtil.ouvrirTransaction();
+
+                    consultationdao.modify(consultation);
+                    employeedao.modify(employee);
+
+                    JpaUtil.validerTransaction();
+
+                    res = true;   
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            JpaUtil.annulerTransaction();
+        }
+        finally
+        {
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        return res;
     }
     
     /**
-     * Display all the statistics regarding the company
-     * @return void
+     * Get the client from the current consultation of an employee
+     * @param employee employee concerned by this consultation
+     * @return Client
     */
-    public List<String> getStatistics()
+    public Client getClientFromEmployee(Employee employee)
     {
-        //TODO
-        return null;
+        boolean res = false;
+        ConsultationDao consultationdao = new ConsultationDao();
+        Client client = null;
+        
+        JpaUtil.creerContextePersistance();
+        
+        try
+        {
+            Consultation consultation = consultationdao.findCurrent(employee);
+            if(consultation != null)
+            {
+                client = consultation.getClient();
+            }
+        }
+        catch(Exception ex)
+        {
+            JpaUtil.annulerTransaction();
+        }
+        finally
+        {
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        return client;
     }
     
     /**
      * begin a consultation
+     * @param employee employee concerned by the consultation
      * @param love mark for love prediction
      * @param health mark for love prediction
      * @param work mark for love prediction
      * @return List<String> generated predictions
     */
-    public List<String> GeneratePrediction(Client client, int love, int health, int work)
+    public List<String> generatePrediction(Employee employee, int love, int health, int work)
     {
         if((love > 4 || love < 0) ||  (health > 4 || health < 0) || (work > 4 || work < 0))
             return null;
+        
+        Client client = getClientFromEmployee(employee);
         
         AstroTest astroApi = new AstroTest();
         List<String> predictions = null;
         try
         {
-            predictions = astroApi.getPredictions(client.getProfilAstral().getLuckyColor(), client.getProfilAstral().getTotemAnimal(), love, health, work);
+            if(client != null)
+            {
+                predictions = astroApi.getPredictions(client.getProfilAstral().getLuckyColor(), client.getProfilAstral().getTotemAnimal(), love, health, work);
+            }
         }
         catch(Exception ex)
         {
-            ex.printStackTrace();
+            
         }
         
         return predictions;
     }
     
+        
+    /**
+     * Display all the statistics regarding the company
+     * @return LinkedHashMap<Medium, Integer>
+    */
+    public LinkedHashMap<Medium, Integer> getStatisticsMedium()
+    {
+        MediumDao mediumdao = new MediumDao();
+        
+        List<Object[]> mediumsList = null;
+        
+        LinkedHashMap<Medium, Integer> statsMedium = null;
+        
+        JpaUtil.creerContextePersistance();
+        
+        try
+        {
+            mediumsList = mediumdao.getMediumAndCountConsultation();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        if(mediumsList != null)
+        {
+            statsMedium = new LinkedHashMap<Medium, Integer>();
+            for (Object[] ob : mediumsList)
+            {
+                statsMedium.put((Medium) ob[0], (int) (long) ob[1]);
+            }
+        }
+        
+        return statsMedium;
+    }
+    
+        
+    /**
+     * Display all the statistics regarding the company
+     * @return LinkedHashMap<Medium, Integer>
+    */
+    public LinkedHashMap<Employee, LinkedHashMap<Client, Integer>> getStatisticsEmployee()
+    {
+        ConsultationDao consultationdao = new ConsultationDao();
+        
+        List<Object[]> statsEmployeeList = null;
+        
+        LinkedHashMap<Employee, LinkedHashMap<Client, Integer>> statsEmployee = null;
+        
+        JpaUtil.creerContextePersistance();
+        
+        try
+        {
+            statsEmployeeList = consultationdao.getEmployeeStats();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        if(statsEmployeeList != null)
+        {
+            statsEmployee = new LinkedHashMap<Employee, LinkedHashMap<Client, Integer>>();
+            for (Object[] ob : statsEmployeeList)
+            {
+                if(!statsEmployee.containsKey((Employee) ob[0]))
+                {
+                    LinkedHashMap<Client, Integer> value = new LinkedHashMap<Client, Integer>();
+                    value.put((Client)ob[1], (int)(long)ob[2]);
+                    statsEmployee.put((Employee)ob[0], value);
+                }
+                else
+                {
+                    statsEmployee.get((Employee) ob[0]).put((Client)ob[1], (int)(long)ob[2]);
+                }
+            }
+        }
+        
+        return statsEmployee;
+    }
     
 }

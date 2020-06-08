@@ -48,6 +48,7 @@ public class Consultation implements Serializable {
     
     public Consultation()
     {
+        this.hourAskConsultation = new Date();
     }
 
     public Long getId() {
@@ -143,8 +144,10 @@ public class Consultation implements Serializable {
         String res = "Metiers.Modeles.Consultation[ id=" + id + " ]\n";
         res += "comment : " + this.getComment() + "\n";
         res += "hour ask : " + this.getHourAskConsultation().toString() + "\n";
-        res += "hour begin: " + this.getHourBeginConsultation().toString() + "\n";
-        res += "hour end : " + this.getHourEndConsultation().toString() + "\n";
+        if(this.getHourBeginConsultation() != null)
+            res += "hour begin: " + this.getHourBeginConsultation().toString() + "\n";
+        if(this.getHourEndConsultation() != null)
+            res += "hour end : " + this.getHourEndConsultation().toString() + "\n";
         return res;
     }
     

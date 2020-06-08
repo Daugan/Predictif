@@ -8,14 +8,13 @@
     <class>Metiers.Modeles.Employee</class>
     <class>Metiers.Modeles.Consultation</class>
     <class>Metiers.Modeles.Spirite</class>
-    <class>Metiers.Modeles.Cartomencien</class>
     <class>Metiers.Modeles.Astrologue</class>
+    <class>Metiers.Modeles.Cartomancien</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/PredictIF"/>
       <property name="javax.persistence.jdbc.user" value="insa"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
-      <property name="javax.persistence.jdbc.password" value="insa"/>
-      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+      <property name="javax.persistence.jdbc.password" value="insa"/> 
     </properties>
   </persistence-unit>
 </persistence>

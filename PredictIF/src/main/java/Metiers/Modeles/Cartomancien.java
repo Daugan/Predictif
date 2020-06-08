@@ -12,13 +12,13 @@ import javax.persistence.Entity;
  * @author Romain
  */
 @Entity
-public class Cartomencien extends Medium {
+public class Cartomancien extends Medium {
 
-    public Cartomencien(String denomination, String presentation, Gender gender) {
+    public Cartomancien(String denomination, String presentation, Gender gender) {
         super(denomination, presentation, gender);
     }
     
-    public Cartomencien()
+    public Cartomancien()
     { 
     }
     
@@ -38,10 +38,10 @@ public class Cartomencien extends Medium {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cartomencien)) {
+        if (!(object instanceof Cartomancien)) {
             return false;
         }
-        Cartomencien other = (Cartomencien) object;
+        Cartomancien other = (Cartomancien) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

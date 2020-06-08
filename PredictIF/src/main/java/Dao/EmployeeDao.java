@@ -40,14 +40,14 @@ public class EmployeeDao {
     
     public List<Employee> findAll()
     {
-        String req = "select c from Employee c order by c.lastname desc";
+        String req = "select e from Employee e order by e.lastname desc";
         Query query = JpaUtil.obtenirContextePersistance().createQuery(req);
         return (List<Employee>)query.getResultList();
     }
     
     public Employee find(String mail)
     {
-        String req = "select c from Employee c where c.mail = :mail";
+        String req = "select e from Employee e where e.mail = :mail";
         TypedQuery<Employee> query = JpaUtil.obtenirContextePersistance().createQuery(req, Employee.class);
         query.setParameter("mail", mail);
         List<Employee> employees = query.getResultList();
@@ -61,7 +61,7 @@ public class EmployeeDao {
     
     public Employee findAvailable(Gender gender)
     {
-        String req = "select c from Employee c where c.disponibility = :dispo and c.gender = :gender";
+        String req = "select e from Employee e where e.disponibility = :dispo and e.gender = :gender";
         TypedQuery<Employee> query = JpaUtil.obtenirContextePersistance().createQuery(req, Employee.class);
         query.setParameter("dispo", true);
         query.setParameter("gender", gender);

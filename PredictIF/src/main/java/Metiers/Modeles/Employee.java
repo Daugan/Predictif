@@ -35,6 +35,7 @@ public class Employee implements Serializable {
     private String address;
     @Temporal(TemporalType.DATE)
     private Date birthDate;
+    private String phone;
     private boolean disponibility;
     protected Gender gender;
     
@@ -44,7 +45,7 @@ public class Employee implements Serializable {
     }
     
     //constructor
-    public Employee(String firstname, String lastname, String mail, String password, String address, Date birthDate, Gender gender, boolean disponibility)
+    public Employee(String firstname, String lastname, String mail, String password, String address, Date birthDate, String phone,Gender gender, boolean disponibility)
     {
         this.firstName = firstname;
         this.lastName = lastname;
@@ -52,6 +53,7 @@ public class Employee implements Serializable {
         this.password = password;
         this.address = address;
         this.birthDate = birthDate;
+        this.phone = phone;
         this.gender = gender;
         this.disponibility = disponibility;
     }
@@ -124,6 +126,14 @@ public class Employee implements Serializable {
     void setBirthDate(Date birthDate)
     {
         this.birthDate = birthDate;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Gender getGender() {

@@ -41,4 +41,21 @@ public class MediumDao {
         Query query = JpaUtil.obtenirContextePersistance().createQuery(req);
         return (List<Medium>)query.getResultList();
     }
+    
+    public List<Object[]> getMediumAndCountConsultation()
+    {
+        String q = new StringBuilder()
+                       .append("select m, count(c) as total ")
+                       .append("from Medium m ")
+                       .append("left join Consultation c on m = c.medium ")
+                       .append("group by m ")
+                       .append("order by count(c) desc")
+                       .toString();
+        
+        Query query = JpaUtil.obtenirContextePersistance().createQuery(q);
+        
+        List<Object[]> list = query.getResultList();
+        
+        return list;
+    }
 }

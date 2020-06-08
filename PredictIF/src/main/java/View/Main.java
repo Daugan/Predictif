@@ -15,8 +15,12 @@ import Metiers.services.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -75,7 +79,7 @@ public class Main {
         Client client = null;
         Employee employee = null;
         
-        initialiseBDD();
+        //initialiseBDD();
         
         //main loop => front end
         while(loop)
@@ -83,9 +87,9 @@ public class Main {
             int selection;
         
             System.out.println("\n-----Predict'if-----");
-            System.out.println("1 - Connect as client");
+            System.out.println("1 - Log in as client");
             System.out.println("2 - Register as client");
-            System.out.println("3 - Connect as employee");
+            System.out.println("3 - Log in as employee");
             System.out.println("4 - CLIENT - display connected client profil");
             System.out.println("5 - CLIENT - get medium List");
             System.out.println("6 - CLIENT - Ask for a consultation");
@@ -94,6 +98,7 @@ public class Main {
             System.out.println("9 - EMPLOYEE - Get predictions for the actual consultation");
             System.out.println("10 - EMPLOYEE - End consultation");
             System.out.println("11 - EMPLOYEE - Statistics");
+            System.out.println("12 - Log out");
             System.out.println("0 - Quit");
         
             selection = lireInteger("choix : ");
@@ -111,7 +116,7 @@ public class Main {
                     break;
                 case 4:
                     if(client != null)
-                        getClientProfileService(client);
+                        displayClientProfileService(client);
                     else
                         System.out.println("You must be connected as client to use this fonctionnality");
                     break;
@@ -152,10 +157,15 @@ public class Main {
                         System.out.println("You must be connected as employee to use this fonctionnality");
                     break;
                 case 11:
-                    if(employee != null)
-                        getStatisticsService(employee);
-                    else
-                        System.out.println("You must be connected as employee to use this fonctionnality");
+                    //if(employee != null)
+                    getStatisticsService();
+                    //else
+                        //System.out.println("You must be connected as employee to use this fonctionnality");
+                    break;
+                case 12:
+                    employee = null;
+                    client = null;
+                    System.out.println("You have been deconnected");
                     break;
                 case 0:
                     loop = false;
@@ -181,16 +191,18 @@ public class Main {
     {
         Service service = new Service();
         
-        Client client = new Client("Romain", "test", "test", "test", "06", new Date(1999,11,22), "rue de", "Lyon", 69100, Client.Civilite.M, true);
+        String firstname = lireChaine("firstname ? : ");
+        String lastname = lireChaine("lastname ? : ");
+        Client client = new Client(firstname, lastname, firstname+"@gmail.com", "1234", "06", Date.from(LocalDate.of(2000,8,13).atStartOfDay(ZoneId.systemDefault()).toInstant()), "rue de", "Lyon", 69100, Client.Civilite.M, true);
    
         boolean inscription = service.registerClient(client);
         if(inscription)
         {
-            System.out.println("Succès inscription");
+            System.out.println("inscription success");
         }
         else
         {
-            System.out.print("Echec inscription");
+            System.out.print("inscription failure");
         }
     }
     
@@ -238,28 +250,31 @@ public class Main {
         return tmpEmployee;
     }
     
-    public static void getClientProfileService(Client client)
+    public static void displayClientProfileService(Client client)
     {      
-        System.out.println("client profile : " + client.getFirstName() + " " + client.getLastName());
-        ProfilAstral profilAstral = client.getProfilAstral();
-        if(profilAstral != null)
+        if(client != null)
         {
-            System.out.println(profilAstral.toString());
-        }
-        else
-            System.out.println("no astral profile for this client => error");
-        
-        List<Consultation> consultations = client.getConsultations();
-        if(consultations.size() > 0)
-        {
-            System.out.println("consultation history : ");
-            for(Consultation c : consultations)
+            System.out.println("client profile : " + client.getFirstName() + " " + client.getLastName());
+            ProfilAstral profilAstral = client.getProfilAstral();
+            if(profilAstral != null)
             {
-                 System.out.println(c.toString());
+                System.out.println(profilAstral.toString());
             }
+            else
+                System.out.println("no astral profile for this client => error");
+
+            List<Consultation> consultations = client.getConsultations();
+            if(consultations.size() > 0)
+            {
+                System.out.println("consultation history : ");
+                for(Consultation c : consultations)
+                {
+                     System.out.println(c.toString());
+                }
+            }
+            else
+                System.out.println("no consultation yet");
         }
-        else
-            System.out.println("no consultation yet");
     }
     
     public static void consultMediumListService()
@@ -289,7 +304,7 @@ public class Main {
         Service service = new Service();
         
         consultMediumListService();
-        int id = lireInteger("Numero du medium ? : ");
+        int id = lireInteger("id medium ? : ");
         if(service.askConsultation(id, client))
         {
             System.out.println("Consultation created");
@@ -302,16 +317,45 @@ public class Main {
     
     public static void getClientProfilFromConsultationService(Employee employee)
     {
+        if(employee.isDisponibility())
+        {
+            System.out.println("no consultation in progress");
+            return;
+        }
         
+        Service service = new Service();
+        Client client = service.getClientFromEmployee(employee);
+        
+        displayClientProfileService(client);
     }
     
     public static void beginConsultationService(Employee employee)
     {
+        if(employee.isDisponibility())
+        {
+            System.out.println("no consultation in progress");
+            return;
+        }
         
+        Service service = new Service();
+        if(service.beginConsultation(employee))
+        {
+            System.out.println("Consultation has beginned. Wait for the client call");
+        }
+        else
+        {
+            System.out.println("An error occured. Please try again or contact the support");
+        }
     }
     
     public static void generatePredictionsService(Employee employee)
     {
+        if(employee.isDisponibility())
+        {
+            System.out.println("no consultation in progress");
+            return;
+        }
+        
         Service service = new Service();
         
         int love = lireInteger("love : ");
@@ -324,16 +368,15 @@ public class Main {
         }
         else
         {
-            //List<String> predictions = service.GeneratePrediction(client, love, health, work);
-            List<String> predictions = null;
+            List<String> predictions = service.generatePrediction(employee, love, health, work);
         
             if(predictions != null)
             {
                 System.out.println("");
                 System.out.println("~<[ Prédictions ]>~");
-                System.out.println("[ Amour ] " + predictions.get(0));
-                System.out.println("[ Santé ] " + predictions.get(1));
-                System.out.println("[Travail] " + predictions.get(2));
+                System.out.println("[ love ] " + predictions.get(0));
+                System.out.println("[ health ] " + predictions.get(1));
+                System.out.println("[ work ] " + predictions.get(2));
                 System.out.println("");
             }
         }
@@ -341,12 +384,60 @@ public class Main {
     
     public static void endConsultationService(Employee employee)
     {
+        if(employee.isDisponibility())
+        {
+            System.out.println("no consultation in progress");
+            return;
+        }
         
+        Service service = new Service();
+        
+        String comment = lireChaine("Comment about the consultation : ");
+        
+        if(service.endConsultation(employee, comment))
+        {
+            System.out.println("Consultation has ended");
+        }
+        else
+        {
+            System.out.println("An error occured. Please try again or contact the support");
+        }
     }
     
-    public static void getStatisticsService(Employee employee)
+    public static void getStatisticsService()
     {
+        Service service = new Service();
         
+        System.out.println("Statistiques :");
+        
+        LinkedHashMap<Medium, Integer> statsMediums = service.getStatisticsMedium();
+        LinkedHashMap<Employee, LinkedHashMap<Client, Integer>> statsEmployee = service.getStatisticsEmployee();
+        if(statsMediums == null || statsEmployee == null)
+        {
+            System.out.println("An error occured. Please try to contact the support");
+            return;
+        }
+        
+        System.out.println("Number of consultations per medium");
+        
+        Set<Medium> keysMedium = statsMediums.keySet();
+        for(Medium m : keysMedium)
+        {
+            System.out.println(m.getDenomination() + " : " + statsMediums.get(m) + " consultations");
+        }
+        
+        System.out.println("\nBreakdown of customers by employee");
+        
+        Set<Employee> keysEmployee = statsEmployee.keySet();
+        for(Employee e : keysEmployee)
+        {
+            System.out.println("Employee : " + e.getFirstName() + " " + e.getLastName() + " : ");
+            Set<Client> keysClient = statsEmployee.get(e).keySet();
+            for(Client c : keysClient)
+            {
+                System.out.println("Client " + c.getFirstName() + " " + c.getLastName() + " : " + statsEmployee.get(e).get(c) + " consultations");
+            }
+        }
     }
     
 }
