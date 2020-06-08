@@ -157,10 +157,10 @@ public class Main {
                         System.out.println("You must be connected as employee to use this fonctionnality");
                     break;
                 case 11:
-                    //if(employee != null)
+                    if(employee != null)
                     getStatisticsService();
-                    //else
-                        //System.out.println("You must be connected as employee to use this fonctionnality");
+                    else
+                        System.out.println("You must be connected as employee to use this fonctionnality");
                     break;
                 case 12:
                     employee = null;

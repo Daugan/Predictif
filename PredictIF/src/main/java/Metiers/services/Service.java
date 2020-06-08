@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -129,46 +131,28 @@ public class Service {
     */
     public boolean registerClient(Client client)
     {
-        boolean res = true;
+        boolean res = false;
         ClientDao clientdao = new ClientDao();
         
-        //create profil
         AstroTest astroApi = new AstroTest();
+        
+        StringWriter corps = new StringWriter();
+        PrintWriter mailWriter = new PrintWriter(corps);
+        
+        JpaUtil.creerContextePersistance();
         try
         {
             List<String> profil = astroApi.getProfil(client.getFirstName(), client.getBirthDate());
             ProfilAstral profilA = new ProfilAstral(profil.get(0),profil.get(1),profil.get(3),profil.get(2));
             client.setProfilAstral(profilA);
-        }
-        catch(Exception ex)
-        {
-            client = null;
-        }
-        
-        JpaUtil.creerContextePersistance();
-        try
-        {
+            
             JpaUtil.ouvrirTransaction();
             
             clientdao.create(client);
             
             JpaUtil.validerTransaction();
-        }
-        catch(Exception ex)
-        {
-            JpaUtil.annulerTransaction();
-            res = false;
-        }
-        finally
-        {
-            JpaUtil.fermerContextePersistance();
-        }
-        
-        //Mail generation
-        StringWriter corps = new StringWriter();
-        PrintWriter mailWriter = new PrintWriter(corps);
-        if(res)
-        {
+            
+             //Mail generation
             mailWriter.println("Bonjour,");
             mailWriter.println();
             mailWriter.println("Votre compte à été crée .. vous pouvez vous connecter");
@@ -183,9 +167,14 @@ public class Service {
                     "Confirmation inscritpion Predict'IF",
                     corps.toString()
                 );
+            
+            res = true;
         }
-        else
+        catch(Exception ex)
         {
+            JpaUtil.annulerTransaction();
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Erreur", ex);
+            
             mailWriter.println("Bonjour,");
             mailWriter.println();
             mailWriter.println("Une erreur est survenue durant la création de votre compte Predict'if");
@@ -201,6 +190,10 @@ public class Service {
                     "Echec inscritpion Predict'IF",
                     corps.toString()
                 );
+        }
+        finally
+        {
+            JpaUtil.fermerContextePersistance();
         }
         
         return res;
@@ -294,12 +287,13 @@ public class Service {
         }
         catch(Exception ex)
         {
-            
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Erreur", ex);
         }
         finally
         {
             JpaUtil.fermerContextePersistance();
         }
+        
         
         return mediumList;
     }
@@ -321,8 +315,6 @@ public class Service {
         
         Medium medium = null;
         Employee employee = null;
-        Consultation consultation = new Consultation(client);
-        client.addConsultation(consultation);
         
         JpaUtil.creerContextePersistance();
         
@@ -332,8 +324,8 @@ public class Service {
             employee = employeedao.findAvailable(medium.getGender());
             if(employee != null && medium != null)
             {
-                consultation.setMedium(medium);
-                consultation.setEmployee(employee);
+                Consultation consultation = new Consultation(client, medium, employee);
+                client.addConsultation(consultation);
                 employee.setDisponibility(false);
                 
                 JpaUtil.ouvrirTransaction();
@@ -344,22 +336,20 @@ public class Service {
                 
                 JpaUtil.validerTransaction();
             
+                String msg = "Bonjour " + employee.getFirstName() + ". Consultation requise pour " + client.getCivilite() + " " + client.getFirstName() + " " + client.getLastName() + ". Médium à incarner : " + medium.getGender() + " " + medium.getDenomination();
+                Message.envoyerNotification(employee.getPhone(), msg);
+                
                 res = true;
             }
         }
         catch(Exception ex)
         {
             JpaUtil.annulerTransaction();
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Erreur", ex);
         }
         finally
         {
             JpaUtil.fermerContextePersistance();
-        }
-        
-        if(res)
-        {
-            String msg = "Bonjour " + employee.getFirstName() + ". Consultation requise pour " + client.getCivilite() + " " + client.getFirstName() + " " + client.getLastName() + ". Médium à incarner : " + medium.getGender() + " " + medium.getDenomination();
-            Message.envoyerNotification(employee.getPhone(), msg);
         }
         
         return res;
@@ -392,24 +382,22 @@ public class Service {
                     consultationdao.modify(consultation);
 
                     JpaUtil.validerTransaction();
-
-                    res = true;   
+                     
+                    String msg = "Bonjour " + consultation.getClient().getFirstName() + ". J’ai bien reçu votre demande de consultation du " + consultation.getHourAskConsultation().toString() + ". Vous pouvez dès à présent me contacter au " + consultation.getEmployee().getPhone() + ".  A tout de suite ! Médiumiquement vôtre, " + consultation.getMedium().getGender() + " " + consultation.getMedium().getDenomination();
+                    Message.envoyerNotification(consultation.getClient().getPhone(), msg);
+            
+                    res = true;
                 }
             }
         }
         catch(Exception ex)
         {
             JpaUtil.annulerTransaction();
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Erreur", ex);
         }
         finally
         {
             JpaUtil.fermerContextePersistance();
-        }
-        
-        if(res)
-        {
-            String msg = "Bonjour " + consultation.getClient().getFirstName() + ". J’ai bien reçu votre demande de consultation du " + consultation.getHourAskConsultation().toString() + ". Vous pouvez dès à présent me contacter au " + consultation.getEmployee().getPhone() + ".  A tout de suite ! Médiumiquement vôtre, " + consultation.getMedium().getGender() + " " + consultation.getMedium().getDenomination();
-            Message.envoyerNotification(consultation.getClient().getPhone(), msg);
         }
         
         return res;
@@ -454,6 +442,7 @@ public class Service {
         catch(Exception ex)
         {
             JpaUtil.annulerTransaction();
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Erreur", ex);
         }
         finally
         {
@@ -487,6 +476,7 @@ public class Service {
         catch(Exception ex)
         {
             JpaUtil.annulerTransaction();
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Erreur", ex);
         }
         finally
         {
@@ -522,7 +512,7 @@ public class Service {
         }
         catch(Exception ex)
         {
-            
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Erreur", ex);
         }
         
         return predictions;
@@ -549,7 +539,7 @@ public class Service {
         }
         catch(Exception ex)
         {
-            ex.printStackTrace();
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Erreur", ex);
         }
         finally
         {
@@ -589,7 +579,7 @@ public class Service {
         }
         catch(Exception ex)
         {
-            ex.printStackTrace();
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Erreur", ex);
         }
         finally
         {

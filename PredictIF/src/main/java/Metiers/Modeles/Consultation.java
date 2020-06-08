@@ -41,9 +41,11 @@ public class Consultation implements Serializable {
     @ManyToOne
     private Employee employee;
 
-    public Consultation(Client client) {
+    public Consultation(Client client, Medium medium, Employee employee) {
         this.hourAskConsultation = new Date();
         this.client = client;
+        this.medium = medium;
+        this.employee = employee;
     }
     
     public Consultation()
