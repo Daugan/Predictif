@@ -85,10 +85,11 @@ and open the template in the editor.
                     .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
                         console.log('Response',response); // LOG dans Console Javascript
                         if (response.connexion) {
-                            window.location = "http://localhost:8080/IHM/clientProfile.html";
+                            window.location = "clientProfile.html";
                             var client = response.client;
                             $('#notification').html("Connexion de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
                         }
+                        
                         else {
                             $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification
                         }

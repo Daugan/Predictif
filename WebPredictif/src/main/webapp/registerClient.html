@@ -9,8 +9,97 @@ and open the template in the editor.
         <title>Predict'IF - inscription</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="styleSheet.css">        
     </head>
     <body>
-        <div>TODO write content</div>
+
+        <div class ="row">
+            <div class="column">
+            </div>
+            <div class="column" style="background-color:#8A2BE2;">
+                    
+                <div class="row">
+                    <label>Veuillez renseigner les champs ci dessous : </label>
+                </div>
+                <div class="row">
+                    <input type="text" id="name-input" placeholder="Nom"/> <input type="text" id="surname-input" placeholder="Prénom"/>
+                </div>
+                <div class="row">
+                     <input type="text" id="birth-input" placeholder="JJ/MM/AAAA"/>
+                </div>
+                <div class="row">
+                    <input type="text" id="street-input" placeholder="1, rue des rossignols"/>
+                </div>
+                <div class="row">
+                    <input type="text" id="street-input" placeholder="1, rue des rossignols"/>
+                </div>
+                <div class="row">
+                    <input type="text" id="city-input" placeholder="Ville"/> <input type="text" id="CP-input" placeholder="Code Postal"/>
+                </div>
+                <div class="row">
+                    <input type="text" id="street-input" placeholder="1, rue des rossignols"/>
+                </div>
+                <br/><br/>
+                <div class="row">
+                    <button id="button-signin">Se connecter</button>
+                </div>
+                <div class="row">
+                     <p>Vous n'avez pas encore de compte ?</p>
+                </div>
+                <div class="row">
+                    <button id="button-signup"><a href="registerClient.html">S'inscrire</a></button>
+                </div>     
+            </div>
+            <div class="column">
+                Nos avis
+            </div>
+        </div>
+        
+        
+         <script>
+            $(document).ready( function () {
+                $('#button-signin').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
+
+                    console.log("clic sur le bouton de connexion"); // LOG dans Console Javascript
+                    $('#notification').html("Connexion..."); // Message pour le paragraphe de notification
+
+                    // Récupération de la valeur des champs du formulaire
+                    var champMail = $('#champ-mail').val();
+                    var champPassword = $('#champ-password').val();
+
+                    // Appel AJAX
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'connect',
+                            mail: champMail,
+                            password: champPassword
+                        },
+                        dataType: 'json'
+                    })
+                    .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('Response',response); // LOG dans Console Javascript
+                        if (response.connexion) {
+                            window.location = "clientProfile.html";
+                            var client = response.client;
+                            $('#notification').html("Connexion de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
+                        }
+                        
+                        else {
+                            $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification
+                        }
+                    })
+                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error',error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+                    .always( function () { // Fonction toujours appelée
+                        
+                    });
+                });
+            });
+        </script>
     </body>
 </html>
