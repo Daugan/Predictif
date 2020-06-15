@@ -9,8 +9,86 @@ and open the template in the editor.
         <title>Predict'IF intranet - login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
-    <body>
-        <div>TODO write content</div>
+      <body>
+          <div class ="row">
+              <h1 style="text-align:center;">Intranet Predict'IF</h1>
+          </div>
+        <div class ="row">
+            <div class="column">
+            </div>
+            <div class="column" style="background-color:#8A2BE2;">
+                    
+                <div class="row">
+                    <label>Identifiant: </label>
+                </div>
+
+                <div class="row">
+                    <input type="text" id="champ-login" placeholder="exemple@mail.com"/>
+                </div>
+                <div class="row">
+                    <label>Mot de passe: </label>
+                </div>
+                <div class="row">
+                    <input type="text" id="champ-password" placeholder="mot de passe"/>
+                </div>
+                <br/><br/>
+                <div class="row">
+                    <button id="button-signin">Se connecter</button>
+                </div>
+            </div>
+            <div class="column">
+            </div>
+        </div>
+        
+        
+         <script>
+            $(document).ready( function () {
+                $('#button-signin').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
+
+                    console.log("clic sur le bouton de connexion"); // LOG dans Console Javascript
+                    $('#notification').html("Connexion..."); // Message pour le paragraphe de notification
+
+                    // Récupération de la valeur des champs du formulaire
+                    var champLogin = $('#champ-login').val();
+                    var champPassword = $('#champ-password').val();
+
+                    // Appel AJAX
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'intraConnect',
+                            mail: champLogin,
+                            password: champPassword
+                        },
+                        dataType: 'json'
+                    })
+                    .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('Response',response); // LOG dans Console Javascript
+                        if (response.connexion) {
+                            //$('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
+                            // TODO: afficher les informations du client dans la notification
+                            // Exemple: Connexion de Ada Lovelace (ID 1)
+                            //redirection js
+                            var client = response.client;
+                            $('#notification').html("Connexion de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
+                        }
+                        else {
+                            $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification
+                            //message d'erreur
+                        }
+                    })
+                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error',error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+                    .always( function () { // Fonction toujours appelée
+                        
+                    });
+                });
+            });
+        </script>
     </body>
 </html>
