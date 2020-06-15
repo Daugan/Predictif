@@ -16,5 +16,5 @@
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.jdbc.password" value="insa"/>
     </properties>
-  </persistence-unit>
+  </persistence-unit> 
 </persistence> 
