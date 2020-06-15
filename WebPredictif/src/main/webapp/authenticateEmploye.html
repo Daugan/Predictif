@@ -9,19 +9,14 @@ and open the template in the editor.
         <title>Predict'IF intranet - login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
       <body>
-        <div class="row">
-             <p>Trouvez la réponse à vos questions avec les médiums les plus reconnus de France. 
-           Nos spirites, cartomanciens et astrologues ont été sélectionnés avec la plus 
-           grande rigueur pour travailler avec précision, honnêteté et sérieux dans leur 
-           spécialité respective. Leurs prédictions personnalisées répondent à toutes les 
-           questions d’ordre sentimental, professionnel ou psychologique dans le plus strict 
-           respect de la déontologie.</p>
-        </div>
+          <div class ="row">
+              <h1 style="text-align:center;">Intranet Predict'IF</h1>
+          </div>
         <div class ="row">
             <div class="column">
-                Nos médiums
             </div>
             <div class="column" style="background-color:#8A2BE2;">
                     
@@ -42,15 +37,8 @@ and open the template in the editor.
                 <div class="row">
                     <button id="button-signin">Se connecter</button>
                 </div>
-                <div class="row">
-                     <p>Vous n'avez pas encore de compte ?</p>
-                </div>
-                <div class="row">
-                    <button id="button-signup"><a href="registerClient.html">S'inscrire</a></button>
-                </div>     
             </div>
             <div class="column">
-                Nos avis
             </div>
         </div>
         
@@ -71,8 +59,8 @@ and open the template in the editor.
                         url: './ActionServlet',
                         method: 'POST',
                         data: {
-                            todo: 'Connect',
-                            login: champLogin,
+                            todo: 'intraConnect',
+                            mail: champLogin,
                             password: champPassword
                         },
                         dataType: 'json'
