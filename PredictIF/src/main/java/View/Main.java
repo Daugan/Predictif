@@ -76,8 +76,8 @@ public class Main {
         
         boolean loop = true;
         
-        Client client = null;
-        Employee employee = null;
+        Long idClient = null;
+        Long idEmployee = null;
         
         //initialiseBDD();
         
@@ -106,65 +106,65 @@ public class Main {
             switch(selection)
             {
                 case 1:
-                    client = authentifyClientService();
+                    idClient = authentifyClientService();
                     break;
                 case 2:
                     registerClientService();
                     break;
                 case 3:
-                    employee = authentifyEmployeeService();
+                    idEmployee = authentifyEmployeeService();
                     break;
                 case 4:
-                    if(client != null)
-                        displayClientProfileService(client);
+                    if(idClient != null)
+                        displayClientProfileService(idClient);
                     else
                         System.out.println("You must be connected as client to use this fonctionnality");
                     break;
                 case 5:
-                    if(client != null)
+                    if(idClient != null)
                         consultMediumListService();
                     else
                         System.out.println("You must be connected as client to use this fonctionnality");
                     break;
                 case 6:
-                    if(client != null)
-                        askConsultationService(client);
+                    if(idClient != null)
+                        askConsultationService(idClient);
                     else
                         System.out.println("You must be connected as client to use this fonctionnality");
                     break;
                 case 7:
-                    if(employee != null)
-                        getClientProfilFromConsultationService(employee);
+                    if(idEmployee != null)
+                        getClientProfilFromConsultationService(idEmployee);
                     else
                         System.out.println("You must be connected as employee to use this fonctionnality");
                     break;
                 case 8:
-                    if(employee != null)
-                        beginConsultationService(employee);
+                    if(idEmployee != null)
+                        beginConsultationService(idEmployee);
                     else
                         System.out.println("You must be connected as employee to use this fonctionnality");
                     break;
                 case 9:
-                    if(employee != null)
-                        generatePredictionsService(employee);
+                    if(idEmployee != null)
+                        generatePredictionsService(idEmployee);
                     else
                         System.out.println("You must be connected as employee to use this fonctionnality");
                     break;
                 case 10:
-                    if(employee != null)
-                        endConsultationService(employee);
+                    if(idEmployee != null)
+                        endConsultationService(idEmployee);
                     else
                         System.out.println("You must be connected as employee to use this fonctionnality");
                     break;
                 case 11:
-                    if(employee != null)
-                    getStatisticsService();
+                    if(idEmployee != null)
+                        getStatisticsService();
                     else
                         System.out.println("You must be connected as employee to use this fonctionnality");
                     break;
                 case 12:
-                    employee = null;
-                    client = null;
+                    idEmployee = null;
+                    idClient = null;
                     System.out.println("You have been deconnected");
                     break;
                 case 0:
@@ -206,7 +206,7 @@ public class Main {
         }
     }
     
-    public static Client authentifyClientService()
+    public static Long authentifyClientService()
     {
         Service service = new Service();
         String mail, password;
@@ -214,9 +214,9 @@ public class Main {
         mail = lireChaine("mail ? : ");
         password = lireChaine("password ? : ");
         
-        Client tmpClient = service.authenticateClient(mail, password);
+        Long tmpIdClient = service.authenticateClient(mail, password);
         
-        if(tmpClient != null)
+        if(tmpIdClient != null)
         {
             System.out.println("Connexion success");
         }
@@ -225,10 +225,10 @@ public class Main {
             System.out.println("Connexion failure");
         }
         
-        return tmpClient;
+        return tmpIdClient;
     }
     
-    public static Employee authentifyEmployeeService()
+    public static Long authentifyEmployeeService()
     {
         Service service = new Service();
         String mail, password;
@@ -236,9 +236,9 @@ public class Main {
         mail = lireChaine("mail ? : ");
         password = lireChaine("password ? : ");
         
-        Employee tmpEmployee = service.authenticateEmployee(mail, password);
+        Long tmpIdEmployee = service.authenticateEmployee(mail, password);
         
-        if(tmpEmployee != null)
+        if(tmpIdEmployee != null)
         {
             System.out.println("Connexion success");
         }
@@ -247,11 +247,14 @@ public class Main {
             System.out.println("Connexion failure");
         }
         
-        return tmpEmployee;
+        return tmpIdEmployee;
     }
     
-    public static void displayClientProfileService(Client client)
+    public static void displayClientProfileService(Long idClient)
     {      
+        Service service = new Service();
+        Client client = service.getClient(idClient);
+        
         if(client != null)
         {
             System.out.println("client profile : " + client.getFirstName() + " " + client.getLastName());
@@ -299,13 +302,13 @@ public class Main {
         }
     }
     
-    public static void askConsultationService(Client client)
+    public static void askConsultationService(Long idClient)
     {
         Service service = new Service();
         
         consultMediumListService();
         int id = lireInteger("id medium ? : ");
-        if(service.askConsultation(id, client))
+        if(service.askConsultation(id, idClient))
         {
             System.out.println("Consultation created");
         }
@@ -315,30 +318,19 @@ public class Main {
         }
     }
     
-    public static void getClientProfilFromConsultationService(Employee employee)
-    {
-        if(employee.isDisponibility())
-        {
-            System.out.println("no consultation in progress");
-            return;
-        }
-        
+    public static void getClientProfilFromConsultationService(Long idEmployee)
+    {      
         Service service = new Service();
-        Client client = service.getClientFromEmployee(employee);
+        Client client = service.getClientFromEmployee(idEmployee);
         
-        displayClientProfileService(client);
+        if(client != null)
+            displayClientProfileService(client.getId());
     }
     
-    public static void beginConsultationService(Employee employee)
-    {
-        if(employee.isDisponibility())
-        {
-            System.out.println("no consultation in progress");
-            return;
-        }
-        
+    public static void beginConsultationService(Long idEmployee)
+    {        
         Service service = new Service();
-        if(service.beginConsultation(employee))
+        if(service.beginConsultation(idEmployee))
         {
             System.out.println("Consultation has beginned. Wait for the client call");
         }
@@ -348,14 +340,8 @@ public class Main {
         }
     }
     
-    public static void generatePredictionsService(Employee employee)
+    public static void generatePredictionsService(Long idEmployee)
     {
-        if(employee.isDisponibility())
-        {
-            System.out.println("no consultation in progress");
-            return;
-        }
-        
         Service service = new Service();
         
         int love = lireInteger("love : ");
@@ -368,7 +354,7 @@ public class Main {
         }
         else
         {
-            List<String> predictions = service.generatePrediction(employee, love, health, work);
+            List<String> predictions = service.generatePrediction(idEmployee, love, health, work);
         
             if(predictions != null)
             {
@@ -382,19 +368,13 @@ public class Main {
         }
     }
     
-    public static void endConsultationService(Employee employee)
+    public static void endConsultationService(Long idEmployee)
     {
-        if(employee.isDisponibility())
-        {
-            System.out.println("no consultation in progress");
-            return;
-        }
-        
         Service service = new Service();
         
         String comment = lireChaine("Comment about the consultation : ");
         
-        if(service.endConsultation(employee, comment))
+        if(service.endConsultation(idEmployee, comment))
         {
             System.out.println("Consultation has ended");
         }

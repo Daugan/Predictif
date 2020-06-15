@@ -44,11 +44,11 @@ public class ConsultationDao {
         return (List<Consultation>)query.getResultList();
     }
     
-    public Consultation findCurrent(Employee employee)
+    public Consultation findCurrent(Long idEmployee)
     {
-        String req = "select c from Consultation c where c.employee = :employee and (c.hourBeginConsultation IS NULL or c.hourEndConsultation IS NULL)";
+        String req = "select c from Consultation c where c.employee.id = :idEmployee and (c.hourBeginConsultation IS NULL or c.hourEndConsultation IS NULL)";
         TypedQuery<Consultation> query = JpaUtil.obtenirContextePersistance().createQuery(req, Consultation.class);
-        query.setParameter("employee", employee);
+        query.setParameter("idEmployee", idEmployee);
         List<Consultation> consultations = query.getResultList();
         Consultation result = null;
         if(!consultations.isEmpty())
