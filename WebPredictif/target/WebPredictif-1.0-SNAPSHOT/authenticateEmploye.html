@@ -25,7 +25,7 @@ and open the template in the editor.
                 </div>
 
                 <div class="row">
-                    <input type="text" id="champ-login" placeholder="exemple@mail.com"/>
+                    <input type="text" id="champ-mail" placeholder="exemple@mail.com"/>
                 </div>
                 <div class="row">
                     <label>Mot de passe: </label>
@@ -51,7 +51,7 @@ and open the template in the editor.
                     $('#notification').html("Connexion..."); // Message pour le paragraphe de notification
 
                     // Récupération de la valeur des champs du formulaire
-                    var champLogin = $('#champ-login').val();
+                    var champMail = $('#champ-mail').val();
                     var champPassword = $('#champ-password').val();
 
                     // Appel AJAX
@@ -60,7 +60,7 @@ and open the template in the editor.
                         method: 'POST',
                         data: {
                             todo: 'intraConnect',
-                            mail: champLogin,
+                            mail: champMail,
                             password: champPassword
                         },
                         dataType: 'json'
