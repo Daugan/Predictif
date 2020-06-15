@@ -18,21 +18,20 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romain
  */
-public class ClientProfileSerialization extends Serialization {
+public class RegisterClientSerialization extends Serialization {
     
     @Override
     public void serialize(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        boolean success = (boolean)request.getAttribute("register");
         Client client = (Client)request.getAttribute("client");
         
         JsonObject container = new JsonObject();
 
-        Boolean connexion = (client != null);
-        container.addProperty("connexion", connexion);
+        container.addProperty("register", success);
 
-        if (client != null) {
+        if (success && client != null) {
             JsonObject jsonClient = new JsonObject();
-            jsonClient.addProperty("id", client.getId());
             jsonClient.addProperty("nom", client.getLastName());
             jsonClient.addProperty("prenom", client.getFirstName());
             jsonClient.addProperty("mail", client.getMail());
@@ -46,4 +45,5 @@ public class ClientProfileSerialization extends Serialization {
         gson.toJson(container, out);
         out.close();
     }
+    
 }

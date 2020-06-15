@@ -9,12 +9,12 @@
     <class>Metiers.Modeles.Consultation</class>
     <class>Metiers.Modeles.Spirite</class>
     <class>Metiers.Modeles.Astrologue</class>
-    <class>Metiers.Modeles.Cartomancien</class>
+    <class>Metiers.Modeles.Cartomancien</class> 
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/PredictIF"/>
       <property name="javax.persistence.jdbc.user" value="insa"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.jdbc.password" value="insa"/>
-    </properties>
-  </persistence-unit> 
-</persistence> 
+    </properties> 
+  </persistence-unit>
+</persistence>

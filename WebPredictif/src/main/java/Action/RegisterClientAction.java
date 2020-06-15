@@ -5,7 +5,7 @@
  */
 package Action;
 
-import Metiers.Modeles.Employee;
+import Metiers.Modeles.Client;
 import Metiers.services.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,26 +14,24 @@ import javax.servlet.http.HttpSession;
  *
  * @author Romain
  */
-public class AuthenticateEmployeeAction extends Action {
+public class RegisterClientAction extends Action {
     
     @Override
     public void execute(HttpServletRequest request) {
         
+        Service service = new Service();
+        
+        //parameters
         String mail = request.getParameter("mail");
         String password = request.getParameter("password");
 
-        Service service = new Service();
-        Employee employee = service.authenticateEmployee(mail, password);
+        //client
+        Client client = new Client();
+        boolean success = service.registerClient(client);
 
-        request.setAttribute("employee", employee);
-        
-        // Session management : save employee ID
-        HttpSession session = request.getSession();
-        if (employee != null) {
-            session.setAttribute("idEmployee", employee.getId());
-        }
-        else {
-            session.removeAttribute("idEmployee");
-        }
+        request.setAttribute("register", success);
+        request.setAttribute("client", client);
+
     }
+    
 }

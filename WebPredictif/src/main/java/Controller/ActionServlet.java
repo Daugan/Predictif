@@ -8,9 +8,13 @@ package Controller;
 import Action.Action;
 import Action.AuthenticateClientAction;
 import Action.AuthenticateEmployeeAction;
+import Action.ListMediumAction;
+import Action.RegisterClientAction;
 import Dao.JpaUtil;
-import Serialization.ClientProfileSerialization;
-import Serialization.EmployeeProfileSerialization;
+import Serialization.AuthenticateClientSerialization;
+import Serialization.AuthenticateEmployeeSerialization;
+import Serialization.ListMediumSerialization;
+import Serialization.RegisterClientSerialization;
 import Serialization.Serialization;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,7 +65,7 @@ public class ActionServlet extends HttpServlet {
         String todo = request.getParameter("todo");
         
         Action action = null;
-        Serialization serialisation = null;
+        Serialization serialization = null;
         
         if(todo != null)
         {
@@ -69,21 +73,20 @@ public class ActionServlet extends HttpServlet {
             {
                 case "connect":
                     action = new AuthenticateClientAction();
-                    serialisation = new ClientProfileSerialization();
+                    serialization = new AuthenticateClientSerialization();
                     break;
+                case "register":
+                    action = new RegisterClientAction();
+                    serialization = new RegisterClientSerialization();
                 case "authenticateClient":
                     break;
-                case "Iconnect":
+                case "intraConnect":
                     action = new AuthenticateEmployeeAction();
-                    serialisation = new EmployeeProfileSerialization();
+                    serialization = new AuthenticateEmployeeSerialization();
                     break;
                 case "medium":
-                    response.setContentType("text/html;charset=UTF-8");
-                    try {
-                    PrintWriter out = response.getWriter();
-                    out.println("Yooo medium");
-                    }
-                    catch(Exception ex){}
+                    action = new ListMediumAction();
+                    serialization = new ListMediumSerialization();
                     break;
                 default:
                     break;
@@ -92,7 +95,7 @@ public class ActionServlet extends HttpServlet {
         
         if (action != null) {
             action.execute(request);
-            serialisation.serialize(request, response);
+            serialization.serialize(request, response);
         }
         else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Erreur dans les paramètres de la requête");
