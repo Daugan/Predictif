@@ -7,8 +7,10 @@ package Controller;
 
 import Action.Action;
 import Action.AuthenticateClientAction;
+import Action.AuthenticateEmployeeAction;
 import Dao.JpaUtil;
 import Serialization.ClientProfileSerialization;
+import Serialization.EmployeeProfileSerialization;
 import Serialization.Serialization;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -68,6 +70,12 @@ public class ActionServlet extends HttpServlet {
                 case "connect":
                     action = new AuthenticateClientAction();
                     serialisation = new ClientProfileSerialization();
+                    break;
+                case "authenticateClient":
+                    break;
+                case "Iconnect":
+                    action = new AuthenticateEmployeeAction();
+                    serialisation = new EmployeeProfileSerialization();
                     break;
                 case "medium":
                     response.setContentType("text/html;charset=UTF-8");
