@@ -214,9 +214,9 @@ public class Main {
         mail = lireChaine("mail ? : ");
         password = lireChaine("password ? : ");
         
-        Long tmpIdClient = service.authenticateClient(mail, password);
+        Client tmpClient = service.authenticateClient(mail, password);
         
-        if(tmpIdClient != null)
+        if(tmpClient != null)
         {
             System.out.println("Connexion success");
         }
@@ -225,7 +225,7 @@ public class Main {
             System.out.println("Connexion failure");
         }
         
-        return tmpIdClient;
+        return tmpClient.getId();
     }
     
     public static Long authentifyEmployeeService()
@@ -236,9 +236,9 @@ public class Main {
         mail = lireChaine("mail ? : ");
         password = lireChaine("password ? : ");
         
-        Long tmpIdEmployee = service.authenticateEmployee(mail, password);
+        Employee tmpEmployee = service.authenticateEmployee(mail, password);
         
-        if(tmpIdEmployee != null)
+        if(tmpEmployee != null)
         {
             System.out.println("Connexion success");
         }
@@ -247,7 +247,7 @@ public class Main {
             System.out.println("Connexion failure");
         }
         
-        return tmpIdEmployee;
+        return tmpEmployee.getId();
     }
     
     public static void displayClientProfileService(Long idClient)

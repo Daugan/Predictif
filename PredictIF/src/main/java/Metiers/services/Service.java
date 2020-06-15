@@ -205,7 +205,7 @@ public class Service {
      * @param password password of the client that correspond to the mail
      * @return Client The authenticate client.
     */
-    public Long authenticateClient(String mail, String password)
+    public Client authenticateClient(String mail, String password)
     {
         ClientDao clientdao = new ClientDao();
         Client client = null;
@@ -232,7 +232,7 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         
-        return client.getId();
+        return client;
     }
     
     /**
@@ -241,7 +241,7 @@ public class Service {
      * @param password password of the employee that correspond to the mail
      * @return Employee The authenticate employee.
     */
-    public Long authenticateEmployee(String mail, String password)
+    public Employee authenticateEmployee(String mail, String password)
     {
         EmployeeDao employedao = new EmployeeDao();
         Employee employee = null;
@@ -268,7 +268,7 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         
-        return employee.getId();
+        return employee;
     }
     
     /**
