@@ -304,7 +304,7 @@ public class Service {
      * @param client client for the consultation
      * @return boolean True consultation has been created
     */
-    public boolean askConsultation(int idMedium, Client client)
+    public boolean askConsultation(int idMedium, Long idClient)
     {
         boolean res = false;
         
@@ -315,6 +315,7 @@ public class Service {
         
         Medium medium = null;
         Employee employee = null;
+        Client client = null;
         
         JpaUtil.creerContextePersistance();
         
@@ -322,7 +323,8 @@ public class Service {
         {
             medium = mediumdao.find(Long.valueOf(idMedium));
             employee = employeedao.findAvailable(medium.getGender());
-            if(employee != null && medium != null)
+            client = clientdao.find(idClient);
+            if(employee != null && medium != null && client != null)
             {
                 Consultation consultation = new Consultation(client, medium, employee);
                 client.addConsultation(consultation);
@@ -360,7 +362,7 @@ public class Service {
      * @param employee employee concerned by this consultation
      * @return boolean True if update worked, false either
     */
-    public boolean beginConsultation(Employee employee)
+    public boolean beginConsultation(Long idEmployee)
     {
         boolean res = false;
         ConsultationDao consultationdao = new ConsultationDao();
@@ -370,7 +372,7 @@ public class Service {
         
         try
         {
-            consultation = consultationdao.findCurrent(employee);
+            consultation = consultationdao.findCurrent(idEmployee);
             if(consultation != null)
             {
                 if(consultation.getHourBeginConsultation() == null)
@@ -409,7 +411,7 @@ public class Service {
      * @param comment comment of the consultation
      * @return boolean True if update worked, false either
     */
-    public boolean endConsultation(Employee employee, String comment)
+    public boolean endConsultation(Long idEmployee, String comment)
     {
         boolean res = false;
         EmployeeDao employeedao = new EmployeeDao();
@@ -419,19 +421,19 @@ public class Service {
         
         try
         {
-            Consultation consultation = consultationdao.findCurrent(employee);
+            Consultation consultation = consultationdao.findCurrent(idEmployee);
             if(consultation != null)
             {
                 if(consultation.getHourBeginConsultation() != null && consultation.getHourEndConsultation()== null)
                 {
                     consultation.setHourEndConsultation(new Date());
                     consultation.setComment(comment);
-                    employee.setDisponibility(true);
+                    consultation.getEmployee().setDisponibility(true);
 
                     JpaUtil.ouvrirTransaction();
 
                     consultationdao.modify(consultation);
-                    employeedao.modify(employee);
+                    employeedao.modify(consultation.getEmployee());
 
                     JpaUtil.validerTransaction();
 
@@ -457,7 +459,7 @@ public class Service {
      * @param employee employee concerned by this consultation
      * @return Client
     */
-    public Client getClientFromEmployee(Employee employee)
+    public Client getClientFromEmployee(Long idEmployee)
     {
         boolean res = false;
         ConsultationDao consultationdao = new ConsultationDao();
@@ -467,7 +469,7 @@ public class Service {
         
         try
         {
-            Consultation consultation = consultationdao.findCurrent(employee);
+            Consultation consultation = consultationdao.findCurrent(idEmployee);
             if(consultation != null)
             {
                 client = consultation.getClient();
@@ -487,6 +489,34 @@ public class Service {
     }
     
     /**
+     * Get the client from the id
+     * @param idClient client id
+     * @return Client
+    */
+    public Client getClient(Long idClient)
+    {
+        ClientDao clientdao = new ClientDao();
+        Client client = null;
+        
+        JpaUtil.creerContextePersistance();
+        
+        try
+        {
+            client = clientdao.find(idClient);
+        }
+        catch(Exception ex)
+        {
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Erreur", ex);
+        }
+        finally
+        {
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        return client;
+    }
+    
+    /**
      * begin a consultation
      * @param employee employee concerned by the consultation
      * @param love mark for love prediction
@@ -494,12 +524,12 @@ public class Service {
      * @param work mark for love prediction
      * @return List<String> generated predictions
     */
-    public List<String> generatePrediction(Employee employee, int love, int health, int work)
+    public List<String> generatePrediction(Long idEmployee, int love, int health, int work)
     {
         if((love > 4 || love < 0) ||  (health > 4 || health < 0) || (work > 4 || work < 0))
             return null;
         
-        Client client = getClientFromEmployee(employee);
+        Client client = getClientFromEmployee(idEmployee);
         
         AstroTest astroApi = new AstroTest();
         List<String> predictions = null;

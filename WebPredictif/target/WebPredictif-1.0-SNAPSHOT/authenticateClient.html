@@ -9,28 +9,56 @@ and open the template in the editor.
         <title>Predict'IF - login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Librairie Javascript: jQuery (v3.4.1) -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="styleSheet.css">
+        <!--http://localhost:8080/IHM/authenticateClient.html
+        romain@gmail.com
+        1234-->
     </head>
     <body>
-        <p>Trouvez la réponse à vos questions avec les médiums les plus reconnus de France. 
+        <div class="row">
+             <p>Trouvez la réponse à vos questions avec les médiums les plus reconnus de France. 
            Nos spirites, cartomanciens et astrologues ont été sélectionnés avec la plus 
            grande rigueur pour travailler avec précision, honnêteté et sérieux dans leur 
            spécialité respective. Leurs prédictions personnalisées répondent à toutes les 
            questions d’ordre sentimental, professionnel ou psychologique dans le plus strict 
            respect de la déontologie.</p>
-        Identifiant: 
-        <br/>
-        <input type="text" id="champ-login" placeholder="exemple@mail.com"/>
-        <br/>
-        Mot de passe: 
-        <br/>
-        <input type="password" id="champ-password" placeholder="mot de passe"/>
-        <br/>
-        <button id="button-signin">Se connecter</button>
+        </div>
+        <div class ="row">
+            <div class="column">
+                Nos médiums
+            </div>
+            <div class="column" style="background-color:#8A2BE2;">
+                    
+                <div class="row">
+                    <label>Identifiant: </label>
+                </div>
+
+                <div class="row">
+                    <input type="text" id="champ-login" placeholder="exemple@mail.com"/>
+                </div>
+                <div class="row">
+                    <label>Mot de passe: </label>
+                </div>
+                <div class="row">
+                    <input type="text" id="champ-password" placeholder="mot de passe"/>
+                </div>
+                <br/><br/>
+                <div class="row">
+                    <button id="button-signin">Se connecter</button>
+                </div>
+                <div class="row">
+                     <p>Vous n'avez pas encore de compte ?</p>
+                </div>
+                <div class="row">
+                    <button id="button-signup"><a href="registerClient.html">S'inscrire</a></button>
+                </div>     
+            </div>
+            <div class="column">
+                Nos avis
+            </div>
+        </div>
         
-        <p>Vous n'avez pas encore de compte ?</p>
-        <button id="button-signup"><a href="registerClient.html">S'inscrire</a></button>
         
          <script>
             $(document).ready( function () {
@@ -48,8 +76,8 @@ and open the template in the editor.
                         url: './ActionServlet',
                         method: 'POST',
                         data: {
-                            todo: 'connect',
-                            mail: champLogin,
+                            todo: 'Connect',
+                            login: champLogin,
                             password: champPassword
                         },
                         dataType: 'json'
