@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romain
  */
-public class EmployeeProfileSerialization extends Serialization {
+public class AuthenticateEmployeeSerialization extends Serialization {
     
     @Override
     public void serialize(HttpServletRequest request, HttpServletResponse response) throws IOException {
