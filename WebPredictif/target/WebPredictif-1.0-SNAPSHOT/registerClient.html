@@ -21,38 +21,32 @@ and open the template in the editor.
                     
                 <div class="row">
                     <label>Veuillez renseigner les champs ci dessous : </label>
-                </div>
+                </div><br/>
                 <div class="row">
                     <input type="text" id="name-input" placeholder="Nom"/> <input type="text" id="surname-input" placeholder="Prénom"/>
-                </div>
+                </div><br/>
                 <div class="row">
                      <input type="text" id="birth-input" placeholder="JJ/MM/AAAA"/>
-                </div>
+                </div><br/>
                 <div class="row">
                     <input type="text" id="street-input" placeholder="1, rue des rossignols"/>
-                </div>
-                <div class="row">
-                    <input type="text" id="street-input" placeholder="1, rue des rossignols"/>
-                </div>
+                </div><br/>
                 <div class="row">
                     <input type="text" id="city-input" placeholder="Ville"/> <input type="text" id="CP-input" placeholder="Code Postal"/>
-                </div>
+                </div><br/>
                 <div class="row">
-                    <input type="text" id="street-input" placeholder="1, rue des rossignols"/>
-                </div>
+                    <input type="text" id="phone-input" placeholder="01 23 45 67 89"/>
+                </div><br/>
+                <div class="row">
+                    <input type="text" id="mail-input" placeholder="exemple@mail.com"/>
+                </div><br/>
+                <div class="row">
+                    <input type="text" id="password-input" placeholder="mot de passe"/>
+                </div><br/>
                 <br/><br/>
                 <div class="row">
-                    <button id="button-signin">Se connecter</button>
-                </div>
-                <div class="row">
-                     <p>Vous n'avez pas encore de compte ?</p>
-                </div>
-                <div class="row">
-                    <button id="button-signup"><a href="registerClient.html">S'inscrire</a></button>
+                    <button id="button-signup">C'est parti !</button>
                 </div>     
-            </div>
-            <div class="column">
-                Nos avis
             </div>
         </div>
         
@@ -61,34 +55,51 @@ and open the template in the editor.
             $(document).ready( function () {
                 $('#button-signin').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
 
-                    console.log("clic sur le bouton de connexion"); // LOG dans Console Javascript
-                    $('#notification').html("Connexion..."); // Message pour le paragraphe de notification
+                    console.log("clic sur le bouton d'inscription"); // LOG dans Console Javascript
+                    $('#notification').html("Insription en cours..."); // Message pour le paragraphe de notification
 
                     // Récupération de la valeur des champs du formulaire
-                    var champMail = $('#champ-mail').val();
-                    var champPassword = $('#champ-password').val();
-
+                    var nameInput = $('#name-input').val();
+                    var surnameInput = $('#surname-input').val();
+                    var birthInput = $('#birth-input').val();
+                    var streetInput = $('#street-input').val();
+                    var cityInput = $('#city-input').val();
+                    var cpInput = $('#CP-input').val();
+                    var phoneInput = $('#phone-input').val();
+                    var mailInput = $('#mail-input').val();
+                    var passwordInput = $('#password-input').val();
+     
+                    
                     // Appel AJAX
                     $.ajax({
                         url: './ActionServlet',
                         method: 'POST',
                         data: {
-                            todo: 'connect',
-                            mail: champMail,
-                            password: champPassword
+                            todo: 'register',
+                            name : nameInput;
+                            surname : surnameInput;
+                            birthDate : birthInput;
+                            street : streetInput;
+                            city : cityInput;
+                            cp : cpInput;
+                            phone : phoneInput;
+                            email : mailInput;
+                            password : passwordInput;
                         },
                         dataType: 'json'
                     })
                     .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
                         console.log('Response',response); // LOG dans Console Javascript
                         if (response.connexion) {
-                            window.location = "clientProfile.html";
+                            window.location = "authenticateClient.html";
+                            alert("Inscription réussie");
                             var client = response.client;
-                            $('#notification').html("Connexion de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
+                            $('#notification').html("inscription de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
                         }
                         
                         else {
-                            $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification
+                            $('#notification').html("Erreur d'inscription"); // Message pour le paragraphe de notification
+                            alert("Erreur");
                         }
                     })
                     .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
