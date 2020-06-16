@@ -9,6 +9,7 @@ and open the template in the editor.
         <title>Predict'IF intranet - login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
       <body>
@@ -31,9 +32,9 @@ and open the template in the editor.
                     <label>Mot de passe: </label>
                 </div>
                 <div class="row">
-                    <input type="text" id="champ-password" placeholder="mot de passe"/>
+                    <input type="password" id="champ-password" placeholder="mot de passe"/>
                 </div>
-                <br/><br/>
+                <p id="notification"></p>
                 <div class="row">
                     <button id="button-signin">Se connecter</button>
                 </div>
@@ -47,7 +48,6 @@ and open the template in the editor.
             $(document).ready( function () {
                 $('#button-signin').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
 
-                    console.log("clic sur le bouton de connexion"); // LOG dans Console Javascript
                     $('#notification').html("Connexion..."); // Message pour le paragraphe de notification
 
                     // Récupération de la valeur des champs du formulaire
@@ -68,12 +68,7 @@ and open the template in the editor.
                     .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
                         console.log('Response',response); // LOG dans Console Javascript
                         if (response.connexion) {
-                            //$('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
-                            // TODO: afficher les informations du client dans la notification
-                            // Exemple: Connexion de Ada Lovelace (ID 1)
-                            //redirection js
-                            var client = response.client;
-                            $('#notification').html("Connexion de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
+                            window.location = "employeMain.html";
                         }
                         else {
                             $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification

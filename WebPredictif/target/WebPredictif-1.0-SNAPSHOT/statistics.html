@@ -10,8 +10,36 @@ http://localhost:8080/IHM/authenticateClient.html
         <title>Predict'IF - statistiques</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
     <body>
-        <div>TODO write content</div>
+        <h1>Les chiffres du mois</h1>
+        
+        <script>
+            $(document).ready( function () {
+                
+                    // Appel AJAX
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'statistic',
+                        },
+                        dataType: 'json'
+                    })
+                    .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log("wsh la team");
+                        console.log(response);
+                    })
+                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error',error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+                    .always( function () { // Fonction toujours appelée
+                        
+                    });
+                });
+        </script>
     </body>
 </html>
