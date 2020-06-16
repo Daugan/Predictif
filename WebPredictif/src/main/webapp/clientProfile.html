@@ -17,8 +17,8 @@ and open the template in the editor.
             <p>Signe du zodiaque : 
                 <span id = "zodiaque"></span> <!--Morceau de texte à l'intérieur d'un texte != div : structure-->
             </p>
-            <p>Signe astrologique : 
-                <span id = "astrologique"></span> 
+            <p>Signe astrologique chinois: 
+                <span id = "chinois"></span> 
             </p>
             <p>Couleur porte-bonheur : 
                 <span id = "porte-bonheur"></span> 
@@ -43,48 +43,37 @@ and open the template in the editor.
                   <td id = "hFin"></td>
                 </tr> 
             </table>
+            
+            <button><a href="consultMediums.html">Demander une consultation</a></button>
 
         <!--<div>TODO write content
         //recuperer idclient ajax pour json</div>-->
          <script>
             $(document).ready( function () {
-                    console.log("affichage du profil client"); // LOG dans Console Javascript
-                    $('#notification').html("Affichage en cours..."); // Message pour le paragraphe de notification
-
-                    // Récupération de la valeur des champs du formulaire
-                   // var champMail = $('#champ-mail').val();
-                   // var champPassword = $('#champ-password').val();
-
+                
                     // Appel AJAX
                     $.ajax({
                         url: './ActionServlet',
                         method: 'POST',
                         data: {
-                            todo: 'clientProfile',
+                            todo: 'profile',
                         },
                         dataType: 'json'
                     })
                     .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
                         console.log('Response',response); // LOG dans Console Javascript
-                        if (response.connexion) {
                             var client = response.client;
-                            $('#zodiaque').html(client.zodiaque);
-                            $('#astrologique').html(client.astrologique);
-                            $('#porte-bonheur').html(client.porte-bonheur);
-                            $('#Animal-totem').html(client.Animal-totem);
-                            $('#dateConsultation').html(client.dateConsultation);
+                            $('#zodiaque').html(client.profilAstral.zodiac);
+                            $('#chinois').html(client.profilAstral.chinese);
+                            $('#porte-bonheur').html(client.profilAstral.color);
+                            $('#Animal-totem').html(client.profilAstral.animal);
+                            /*$('#dateConsultation').html(client.dateConsultation);
                             $('#nomMedium').html(client.nomMedium);
                             $('#hDebut').html(client.hDebut);
-                            $('#hFin').html(client.hFin);
-                            
-                            
-                            
-                            $('#notification').html("Connexion de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
-                        }
-                        else {
-                            $('#notification').html("erreur d'affichage"); // Message pour le paragraphe de notification
-                            //message d'erreur
-                        }
+                            $('#hFin').html(client.hFin);*/
+                            //TODO : 1. boucler sur toute les consultations : client.consultations
+                            //       https://stackoverflow.com/questions/2342371/jquery-loop-on-json-data-using-each
+                            //       2. inserer dans le tableau des lignes avec les donnees : uneConsultation.askK, uneConsultation.medium, uneConsultation.beginH, uneConsultation.endH
                     })
                     .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
                         console.log('Error',error); // LOG dans Console Javascript

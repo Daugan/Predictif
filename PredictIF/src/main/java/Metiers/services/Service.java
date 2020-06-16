@@ -304,7 +304,7 @@ public class Service {
      * @param client client for the consultation
      * @return boolean True consultation has been created
     */
-    public boolean askConsultation(int idMedium, Long idClient)
+    public boolean askConsultation(Long idMedium, Long idClient)
     {
         boolean res = false;
         

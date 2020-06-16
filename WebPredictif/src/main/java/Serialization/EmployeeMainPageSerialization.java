@@ -5,13 +5,11 @@
  */
 package Serialization;
 
-import Metiers.Modeles.Medium;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,25 +17,17 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romain
  */
-public class ListMediumSerialization extends Serialization {
+public class EmployeeMainPageSerialization extends Serialization {
 
     @Override
     public void serialize(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Medium> mediums = (List<Medium>)request.getAttribute("mediums");
+        //List<Medium> mediums = (List<Medium>)request.getAttribute("mediums");
         
         JsonObject container = new JsonObject();
-
-        for(Medium m : mediums)
-        {
-            JsonObject jsonMedium = new JsonObject();
-            
-            jsonMedium.addProperty("denomination", m.getDenomination());
-            jsonMedium.addProperty("presentation", m.getPresentation());
-            jsonMedium.addProperty("type", m.getType());
-            jsonMedium.addProperty("gender", m.getGender().toString());
-
-            container.add(m.getId().toString(), jsonMedium);
-        }
+        //JsonObject jsonClient = new JsonObject();
+        //jsonClient.addProperty("id", employee.getId());
+        //container.add("employee", jsonClient);
+       
 
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -45,5 +35,4 @@ public class ListMediumSerialization extends Serialization {
         gson.toJson(container, out);
         out.close();
     }
-    
 }

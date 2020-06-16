@@ -308,7 +308,7 @@ public class Main {
         
         consultMediumListService();
         int id = lireInteger("id medium ? : ");
-        if(service.askConsultation(id, idClient))
+        if(service.askConsultation(Long.valueOf(id), idClient))
         {
             System.out.println("Consultation created");
         }

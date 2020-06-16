@@ -5,7 +5,6 @@
  */
 package Serialization;
 
-import Metiers.Modeles.Medium;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -19,24 +18,25 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romain
  */
-public class ListMediumSerialization extends Serialization {
+public class PredictionSerialization extends Serialization {
 
     @Override
     public void serialize(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Medium> mediums = (List<Medium>)request.getAttribute("mediums");
+        
+        List<String> predictions = (List<String>)request.getAttribute("predictions");
         
         JsonObject container = new JsonObject();
-
-        for(Medium m : mediums)
+        
+        if(predictions != null)
         {
-            JsonObject jsonMedium = new JsonObject();
-            
-            jsonMedium.addProperty("denomination", m.getDenomination());
-            jsonMedium.addProperty("presentation", m.getPresentation());
-            jsonMedium.addProperty("type", m.getType());
-            jsonMedium.addProperty("gender", m.getGender().toString());
-
-            container.add(m.getId().toString(), jsonMedium);
+            container.addProperty("success", true);
+            container.addProperty("love", predictions.get(0));
+            container.addProperty("health", predictions.get(1));
+            container.addProperty("work", predictions.get(2));
+        }
+        else
+        {
+            container.addProperty("success", false);
         }
 
         response.setContentType("application/json;charset=UTF-8");
@@ -45,5 +45,4 @@ public class ListMediumSerialization extends Serialization {
         gson.toJson(container, out);
         out.close();
     }
-    
 }
