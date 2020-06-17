@@ -41,11 +41,11 @@ and open the template in the editor.
                                 $("<div>", {class: "medium"})
                                         .click(function(){
                                             
-                                });
-                                        .append($("<p>", {class: "type"}).html(value.type));
-                                        .append($("<img>", {class: "image", href: url}));
-                                        .append($("<p>", {class: "presentation"}).html(value.presentation));
-                                        .append($("<p>", {class: "denomination"}).html(value.denomination));
+                                })
+                                        .append($("<p>", {class: "type"}).html(value.type))
+                                        .append($("<img>", {class: "image", href: url}))
+                                        .append($("<p>", {class: "presentation"}).html(value.presentation))
+                                        .append($("<p>", {class: "denomination"}).html(value.denomination))
                                         .appendTo("#containerMedium");
                         })
                         .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
