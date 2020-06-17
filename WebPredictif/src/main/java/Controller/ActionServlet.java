@@ -8,16 +8,29 @@ package Controller;
 import Action.Action;
 import Action.AuthenticateClientAction;
 import Action.AuthenticateEmployeeAction;
+import Action.EmployeeMainPageAction;
 import Action.ListMediumAction;
+import Action.PredictionAction;
+import Action.ProfileClientAction;
 import Action.RegisterClientAction;
+import Action.StatisticAction;
+import Action.askConsultationAction;
+import Action.beginConsultationAction;
+import Action.endConsultationAction;
 import Dao.JpaUtil;
 import Serialization.AuthenticateClientSerialization;
 import Serialization.AuthenticateEmployeeSerialization;
+import Serialization.EmployeeMainPageSerialization;
 import Serialization.ListMediumSerialization;
+import Serialization.PredictionSerialization;
+import Serialization.ProfileClientSerialization;
 import Serialization.RegisterClientSerialization;
 import Serialization.Serialization;
+import Serialization.StatisticSerialization;
+import Serialization.askConsultationSerialization;
+import Serialization.beginConsultationSerialization;
+import Serialization.endConsultationSerialization;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -78,8 +91,6 @@ public class ActionServlet extends HttpServlet {
                 case "register":
                     action = new RegisterClientAction();
                     serialization = new RegisterClientSerialization();
-                case "authenticateClient":
-                    break;
                 case "intraConnect":
                     action = new AuthenticateEmployeeAction();
                     serialization = new AuthenticateEmployeeSerialization();
@@ -87,6 +98,34 @@ public class ActionServlet extends HttpServlet {
                 case "medium":
                     action = new ListMediumAction();
                     serialization = new ListMediumSerialization();
+                    break;
+                case "profile":
+                    action = new ProfileClientAction();
+                    serialization = new ProfileClientSerialization();
+                    break;
+                case "statistic":
+                    action = new StatisticAction();
+                    serialization = new StatisticSerialization();
+                    break;
+                case "employee":
+                    action = new EmployeeMainPageAction();
+                    serialization = new EmployeeMainPageSerialization();
+                    break;
+                case "prediction":
+                    action = new PredictionAction();
+                    serialization = new PredictionSerialization();
+                    break;
+                case "askConsultation":
+                    action = new askConsultationAction();
+                    serialization = new askConsultationSerialization();
+                    break;
+                case "beginConsultation":
+                    action = new beginConsultationAction();
+                    serialization = new beginConsultationSerialization();
+                    break;
+                case "endConsultation":
+                    action = new endConsultationAction();
+                    serialization = new endConsultationSerialization();
                     break;
                 default:
                     break;

@@ -25,7 +25,7 @@ public class Cartomancien extends Medium {
     @Override
     public String getType()
     {
-        return "Cartomencien";
+        return "Cartomancien";
     }
 
     @Override

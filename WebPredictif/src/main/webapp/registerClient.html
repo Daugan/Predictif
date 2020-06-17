@@ -17,45 +17,52 @@ and open the template in the editor.
         <div class ="row">
             <div class="column">
             </div>
-            <div class="column" style="background-color:#8A2BE2;">
-                    
+            <form id="registerform" style="background-color:#8A2BE2;">  
                 <div class="row">
                     <label>Veuillez renseigner les champs ci dessous : </label>
                 </div><br/>
                 <div class="row">
-                    <input type="text" id="name-input" placeholder="Nom"/> <input type="text" id="surname-input" placeholder="Prénom"/>
+                    <input type="text" id="name-input" placeholder="Nom" required/> <input type="text" id="surname-input" placeholder="Prénom" required/>
                 </div><br/>
                 <div class="row">
-                     <input type="text" id="birth-input" placeholder="JJ/MM/AAAA"/>
+                     <input type="date" id="birth-input" placeholder="JJ/MM/AAAA" required/>
                 </div><br/>
                 <div class="row">
-                    <input type="text" id="street-input" placeholder="1, rue des rossignols"/>
+                    <input type="text" id="street-input" placeholder="1, rue des rossignols" required/>
                 </div><br/>
                 <div class="row">
-                    <input type="text" id="city-input" placeholder="Ville"/> <input type="text" id="CP-input" placeholder="Code Postal"/>
+                    <input type="text" id="city-input" placeholder="Ville" required/> <input type="number" id="CP-input" placeholder="Code Postal" required/>
                 </div><br/>
                 <div class="row">
-                    <input type="text" id="phone-input" placeholder="01 23 45 67 89"/>
+                    <input type="tel" id="phone-input" placeholder="01 23 45 67 89" required/>
                 </div><br/>
                 <div class="row">
-                    <input type="text" id="mail-input" placeholder="exemple@mail.com"/>
+                    <input type="email" id="mail-input" placeholder="exemple@mail.com" required/>
                 </div><br/>
                 <div class="row">
-                    <input type="text" id="password-input" placeholder="mot de passe"/>
+                    <input type="password" id="password-input" placeholder="mot de passe" required/>
                 </div><br/>
+                <div>
+                    <label for="civilite-input">Civilite</label>
+                    <select id="civilite-input">
+                        <option value="M">M</option>
+                        <option value="MME">MME</option>
+                    </select>
+                </div>
                 <br/><br/>
                 <div class="row">
-                    <button id="button-signup">C'est parti !</button>
-                </div>     
-            </div>
+                    <button type="submit" id="button-signup">C'est parti !</button>
+                </div>
+            </form>
         </div>
         
         
          <script>
             $(document).ready( function () {
-                $('#button-signin').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
-
-                    console.log("clic sur le bouton d'inscription"); // LOG dans Console Javascript
+                $('#registerform').submit(function (event) { // Fonction appelée lors du submit du formulaire
+                    
+                    event.preventDefault();
+                    
                     $('#notification').html("Insription en cours..."); // Message pour le paragraphe de notification
 
                     // Récupération de la valeur des champs du formulaire
@@ -68,7 +75,9 @@ and open the template in the editor.
                     var phoneInput = $('#phone-input').val();
                     var mailInput = $('#mail-input').val();
                     var passwordInput = $('#password-input').val();
-     
+                    var civilite = $('#civilite-input').val();
+                    
+                    console.log("wsh");
                     
                     // Appel AJAX
                     $.ajax({
@@ -76,30 +85,29 @@ and open the template in the editor.
                         method: 'POST',
                         data: {
                             todo: 'register',
-                            name : nameInput;
-                            surname : surnameInput;
-                            birthDate : birthInput;
-                            street : streetInput;
-                            city : cityInput;
-                            cp : cpInput;
-                            phone : phoneInput;
-                            email : mailInput;
-                            password : passwordInput;
+                            name : nameInput,
+                            surname : surnameInput,
+                            birthDate : birthInput,
+                            street : streetInput,
+                            city : cityInput,
+                            cp : cpInput,
+                            phone : phoneInput,
+                            email : mailInput,
+                            password : passwordInput
                         },
                         dataType: 'json'
                     })
                     .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
                         console.log('Response',response); // LOG dans Console Javascript
-                        if (response.connexion) {
+                        if (response.register) {
                             window.location = "authenticateClient.html";
                             alert("Inscription réussie");
                             var client = response.client;
                             $('#notification').html("inscription de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
                         }
-                        
                         else {
                             $('#notification').html("Erreur d'inscription"); // Message pour le paragraphe de notification
-                            alert("Erreur");
+                            alert("Erreur lors de l'inscription - veuillez reesayer");
                         }
                     })
                     .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX

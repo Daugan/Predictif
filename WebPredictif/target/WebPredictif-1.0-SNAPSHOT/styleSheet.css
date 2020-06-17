@@ -56,7 +56,7 @@ body {
   }
 }
 /* Formulaire responsive*/
-input[type=text], select, textarea {
+input, select, textarea {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -69,7 +69,7 @@ label {
   display: inline-block;
 }
 
-input[type=submit] {
+button[type=submit] {
   background-color: #4CAF50;
   color: white;
   padding: 12px 20px;
@@ -79,7 +79,7 @@ input[type=submit] {
   float: right;
 }
 
-input[type=submit]:hover {
+button[type=submit]:hover {
   background-color: #45a049;
 }
 /*fin du formulaire responsive*/

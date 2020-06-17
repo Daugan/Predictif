@@ -9,22 +9,19 @@ and open the template in the editor.
         <title>Predict'IF choix d'un médium</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
-    <body>
+    <body>   
         <h1>Veuillez choisir un médium</h1>
         <table>
             <tr>
                 <th id = "type">Spirit test</th>
             </tr>
         </table>
+
         <script>
             $(document).ready( function () {
-                    console.log("affichage des médiums"); // LOG dans Console Javascript
-                    $('#notification').html("Affichage en cours..."); // Message pour le paragraphe de notification
-
-                    // Récupération de la valeur des champs du formulaire
-                   // var champMail = $('#champ-mail').val();
-                   // var champPassword = $('#champ-password').val();
 
                     // Appel AJAX
                     $.ajax({
@@ -36,7 +33,26 @@ and open the template in the editor.
                         dataType: 'json'
                     })
                     .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
-                        console.log('Response',response); // LOG dans Console Javascript
+                        console.log(response);
+                        $.each(response, function(key, value) {
+                            //construction de la div medium
+                            let url;
+                            if(value.gender === "M")
+                                url = "homme.png";
+                            else
+                                url = "femme.png";
+                            //div medium qu'on append au body
+                            $("<div>", {class: "medium"})
+                                    .append($("<p>", {class: "type"}).html(value.type))
+                                    .append($("<img>", {class: "image", href: url}))
+                                    .append($("<p>", {class: "presentation"}).html(value.presentation))
+                                    .append($("<p>", {class: "denomination"}).html(value.denomination))
+                                    .appendTo("body");
+
+                        });
+                        
+                        /*MYLENE WORK => MERGE*/
+                        /*console.log('Response',response); // LOG dans Console Javascript
                         if (response.connexion) {
                             <!--http://localhost:8080/WebPredictif/ActionServlet?todo=medium-->
                             var medium = response.medium;
@@ -48,7 +64,7 @@ and open the template in the editor.
                         else {
                             $('#notification').html("erreur d'affichage des mediums"); // Message pour le paragraphe de notification
                             //message d'erreur
-                        }
+                        }*/
                     })
                     .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
                         console.log('Error',error); // LOG dans Console Javascript
