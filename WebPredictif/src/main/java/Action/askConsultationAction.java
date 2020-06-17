@@ -5,7 +5,6 @@
  */
 package Action;
 
-import Metiers.Modeles.Client;
 import Metiers.services.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,15 +22,16 @@ public class askConsultationAction extends Action {
         Long idClient = (Long)session.getAttribute("idClient");
         
         Long idMedium = Long.parseLong(request.getParameter("idMedium"));
+        boolean success = false;
         
-        if(idClient != null)
+        if(idClient != null && idMedium!= null)
         {
             Service service = new Service();
 
-            boolean success = service.askConsultation(idMedium, idClient);
-
-            request.setAttribute("success", success);
+            success = service.askConsultation(idMedium, idClient);
         }
+        
+        request.setAttribute("success", success);
         
 
     }
