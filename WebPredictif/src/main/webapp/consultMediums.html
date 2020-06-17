@@ -10,15 +10,46 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="styleSheet.css">
-    </head>
-    <body>   
-        <div id="containerMedium">
-        </div>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <style>
+            .w3-button.w3-deep-purple.w3-hover-purple {
+                width: 250px;
+                height: 600px;
+                margin: 15px;
+                word-wrap: break-word;
+                white-space: normal
 
+            }
+            /*p{
+                word-wrap: break-word;
+            }
+            .a {
+            width: 250px; 
+            height:auto;
+            border: 1px solid #000000;
+          }*/
+        </style>
+    </head>
+    <body>
+        <div class="w3-container">
+            <p><span class="logo">Predict'IF</span></p>
+            <h1 style="text-align: center">Veuillez choisir un médium</h1>
+            
+        </div>
+        <div id="containerMedium" class='w3-container'> 
+            <div class="w3-button w3-deep-purple w3-hover-purple w3-round w3-half">
+                <p style="text-align: center">Necromancien</p>
+                <img src = "Images/femme.png" alt="presentation d'un médium" style="max-width:100%">
+                <div> 
+                    <p>je suis bien ffffffffffff fffffffff fffffffffffffffffff ffffff ffffffffffff  ffffffffffffffffffffffffff ffffffffffffffffffff</p>
+                </div>
+                <img src = "Images/medium_name.png" alt="presentation d'un médium" style="max-width:100%">
+            </div>
+
+        </div>
+    
             <script>
                 $(document).ready( function () {
-
                         // Appel AJAX
                         $.ajax({
                             url: './ActionServlet',
@@ -43,7 +74,7 @@ and open the template in the editor.
                                             
                                 })
                                         .append($("<p>", {class: "type"}).html(value.type))
-                                        .append($("<img>", {class: "image", href: url}))
+                                        .append($("<img>", {class: "image", src: url}))
                                         .append($("<p>", {class: "presentation"}).html(value.presentation))
                                         .append($("<p>", {class: "denomination"}).html(value.denomination))
                                         .appendTo("#containerMedium");
