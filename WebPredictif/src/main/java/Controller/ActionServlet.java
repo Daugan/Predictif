@@ -8,18 +8,20 @@ package Controller;
 import Action.Action;
 import Action.AuthenticateClientAction;
 import Action.AuthenticateEmployeeAction;
+import Action.DisconnectAction;
 import Action.EmployeeMainPageAction;
 import Action.ListMediumAction;
 import Action.PredictionAction;
 import Action.ProfileClientAction;
 import Action.RegisterClientAction;
 import Action.StatisticAction;
-import Action.askConsultationAction;
-import Action.beginConsultationAction;
-import Action.endConsultationAction;
+import Action.AskConsultationAction;
+import Action.BeginConsultationAction;
+import Action.EndConsultationAction;
 import Dao.JpaUtil;
 import Serialization.AuthenticateClientSerialization;
 import Serialization.AuthenticateEmployeeSerialization;
+import Serialization.DisconnectSerialization;
 import Serialization.EmployeeMainPageSerialization;
 import Serialization.ListMediumSerialization;
 import Serialization.PredictionSerialization;
@@ -27,9 +29,9 @@ import Serialization.ProfileClientSerialization;
 import Serialization.RegisterClientSerialization;
 import Serialization.Serialization;
 import Serialization.StatisticSerialization;
-import Serialization.askConsultationSerialization;
-import Serialization.beginConsultationSerialization;
-import Serialization.endConsultationSerialization;
+import Serialization.AskConsultationSerialization;
+import Serialization.BeginConsultationSerialization;
+import Serialization.EndConsultationSerialization;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -116,16 +118,20 @@ public class ActionServlet extends HttpServlet {
                     serialization = new PredictionSerialization();
                     break;
                 case "askConsultation":
-                    action = new askConsultationAction();
-                    serialization = new askConsultationSerialization();
+                    action = new AskConsultationAction();
+                    serialization = new AskConsultationSerialization();
                     break;
                 case "beginConsultation":
-                    action = new beginConsultationAction();
-                    serialization = new beginConsultationSerialization();
+                    action = new BeginConsultationAction();
+                    serialization = new BeginConsultationSerialization();
                     break;
                 case "endConsultation":
-                    action = new endConsultationAction();
-                    serialization = new endConsultationSerialization();
+                    action = new EndConsultationAction();
+                    serialization = new EndConsultationSerialization();
+                    break;
+                case "disconnect":
+                    action = new DisconnectAction();
+                    serialization = new DisconnectSerialization();
                     break;
                 default:
                     break;

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Romain
  */
-public class askConsultationAction extends Action {
+public class AskConsultationAction extends Action {
     
     @Override
     public void execute(HttpServletRequest request) {
@@ -24,13 +24,11 @@ public class askConsultationAction extends Action {
         Long idMedium = Long.parseLong(request.getParameter("idMedium"));
         boolean success = false;
         
-        if(idClient != null && idMedium!= null)
+        if(idClient != null)
         {
             Service service = new Service();
-
             success = service.askConsultation(idMedium, idClient);
         }
-        
         request.setAttribute("success", success);
         
 

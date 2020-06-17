@@ -17,15 +17,16 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romain
  */
-public class AskConsultationSerialization extends Serialization {
+public class DisconnectSerialization extends Serialization {
 
     @Override
     public void serialize(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        boolean success = (boolean)request.getAttribute("success");
+        String user = (String)request.getAttribute("user");
         
         JsonObject container = new JsonObject();
-        container.addProperty("success", success);
+        container.addProperty("user", user);
        
+
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();

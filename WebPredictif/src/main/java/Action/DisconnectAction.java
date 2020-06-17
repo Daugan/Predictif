@@ -5,8 +5,6 @@
  */
 package Action;
 
-import Metiers.Modeles.Consultation;
-import Metiers.services.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -14,21 +12,29 @@ import javax.servlet.http.HttpSession;
  *
  * @author Romain
  */
-public class EmployeeMainPageAction extends Action {
+public class DisconnectAction extends Action {
     
     @Override
     public void execute(HttpServletRequest request) {
-
+        
         HttpSession session = request.getSession();
+        
+        // first check if user is client
+        Long idClient = (Long)session.getAttribute("idClient");
         Long idEmployee = (Long)session.getAttribute("idEmployee");
-        Consultation consultation = null;
         
-        if(idEmployee != null)
+        if (idClient != null) 
         {
-            Service service = new Service();
-            consultation = service.getConsultationFromEmployee(idEmployee);
+            request.setAttribute("user", "client");
         }
+        else if(idEmployee != null)
+        {
+            request.setAttribute("user", "employee");
+        }
+            
+        session.removeAttribute("idClient");
+        session.removeAttribute("idEmployee");
         
-        request.setAttribute("consultation", consultation);
+
     }
 }

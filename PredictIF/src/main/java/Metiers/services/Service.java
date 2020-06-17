@@ -301,7 +301,7 @@ public class Service {
     /**
      * Create a consultation
      * @param idMedium if of the selected medium for the consultation
-     * @param client client for the consultation
+     * @param idClient client for the consultation
      * @return boolean True consultation has been created
     */
     public boolean askConsultation(Long idMedium, Long idClient)
@@ -321,10 +321,10 @@ public class Service {
         
         try
         {
-            medium = mediumdao.find(Long.valueOf(idMedium));
+            medium = mediumdao.find(idMedium);
             employee = employeedao.findAvailable(medium.getGender());
             client = clientdao.find(idClient);
-            if(employee != null && medium != null && client != null)
+            if(employee != null && client != null)
             {
                 Consultation consultation = new Consultation(client, medium, employee);
                 client.addConsultation(consultation);
@@ -459,21 +459,17 @@ public class Service {
      * @param employee employee concerned by this consultation
      * @return Client
     */
-    public Client getClientFromEmployee(Long idEmployee)
+    public Consultation getConsultationFromEmployee(Long idEmployee)
     {
         boolean res = false;
         ConsultationDao consultationdao = new ConsultationDao();
-        Client client = null;
+        Consultation consultation = null;
         
         JpaUtil.creerContextePersistance();
         
         try
         {
-            Consultation consultation = consultationdao.findCurrent(idEmployee);
-            if(consultation != null)
-            {
-                client = consultation.getClient();
-            }
+            consultation = consultationdao.findCurrent(idEmployee);
         }
         catch(Exception ex)
         {
@@ -485,7 +481,7 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         
-        return client;
+        return consultation;
     }
     
     /**
@@ -529,15 +525,15 @@ public class Service {
         if((love > 4 || love < 0) ||  (health > 4 || health < 0) || (work > 4 || work < 0))
             return null;
         
-        Client client = getClientFromEmployee(idEmployee);
+        Consultation consultation = getConsultationFromEmployee(idEmployee);
         
         AstroTest astroApi = new AstroTest();
         List<String> predictions = null;
         try
         {
-            if(client != null)
+            if(consultation != null && consultation.getClient() != null)
             {
-                predictions = astroApi.getPredictions(client.getProfilAstral().getLuckyColor(), client.getProfilAstral().getTotemAnimal(), love, health, work);
+                predictions = astroApi.getPredictions(consultation.getClient().getProfilAstral().getLuckyColor(), consultation.getClient().getProfilAstral().getTotemAnimal(), love, health, work);
             }
         }
         catch(Exception ex)

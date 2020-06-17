@@ -321,10 +321,10 @@ public class Main {
     public static void getClientProfilFromConsultationService(Long idEmployee)
     {      
         Service service = new Service();
-        Client client = service.getClientFromEmployee(idEmployee);
+        Consultation consultation = service.getConsultationFromEmployee(idEmployee);
         
-        if(client != null)
-            displayClientProfileService(client.getId());
+        if(consultation != null)
+            displayClientProfileService(consultation.getClient().getId());
     }
     
     public static void beginConsultationService(Long idEmployee)
