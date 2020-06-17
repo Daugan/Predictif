@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Romain
  */
-public class endConsultationAction extends Action {
+public class EndConsultationAction extends Action {
     
     @Override
     public void execute(HttpServletRequest request) {
@@ -22,14 +22,14 @@ public class endConsultationAction extends Action {
         Long idEmployee = (Long)session.getAttribute("idEmployee");
         
         String comment = request.getParameter("comment");
+        boolean success = false;
         
         if(idEmployee != null)
         {
             Service service = new Service();
 
-            boolean success = service.endConsultation(idEmployee, comment);
-
-            request.setAttribute("success", success);
+            success = service.endConsultation(idEmployee, comment);
         }
+        request.setAttribute("success", success);
     }
 }

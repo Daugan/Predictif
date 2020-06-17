@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romain
  */
-public class endConsultationSerialization extends Serialization {
+public class EndConsultationSerialization extends Serialization {
 
     @Override
     public void serialize(HttpServletRequest request, HttpServletResponse response) throws IOException {

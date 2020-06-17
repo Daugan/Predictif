@@ -17,11 +17,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romain
  */
-public class askConsultationSerialization extends Serialization {
+public class AskConsultationSerialization extends Serialization {
 
     @Override
     public void serialize(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        
         boolean success = (boolean)request.getAttribute("success");
         
         JsonObject container = new JsonObject();

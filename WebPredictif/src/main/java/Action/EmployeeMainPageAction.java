@@ -5,8 +5,10 @@
  */
 package Action;
 
+import Metiers.Modeles.Consultation;
 import Metiers.services.Service;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -17,9 +19,16 @@ public class EmployeeMainPageAction extends Action {
     @Override
     public void execute(HttpServletRequest request) {
 
-        Service service = new Service();
-
+        HttpSession session = request.getSession();
+        Long idEmployee = (Long)session.getAttribute("idEmployee");
+        Consultation consultation = null;
         
-
+        if(idEmployee != null)
+        {
+            Service service = new Service();
+            consultation = service.getConsultationFromEmployee(idEmployee);
+        }
+        
+        request.setAttribute("consultation", consultation);
     }
 }

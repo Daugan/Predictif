@@ -51,10 +51,16 @@ public class ProfileClientSerialization extends Serialization {
             for(Consultation c : consultations )
             {
                 JsonObject jsonConsultation = new JsonObject();
-                jsonProfilAstral.addProperty("askH", c.getHourAskConsultation().toString());
-                jsonProfilAstral.addProperty("medium", c.getMedium().getDenomination());
-                jsonProfilAstral.addProperty("beginH", c.getHourBeginConsultation().toString());
-                jsonProfilAstral.addProperty("endH", c.getHourEndConsultation().toString());
+                jsonConsultation.addProperty("askH", c.getHourAskConsultation().toString());
+                jsonConsultation.addProperty("medium", c.getMedium().getDenomination());
+                if(c.getHourBeginConsultation() != null)
+                    jsonConsultation.addProperty("beginH", c.getHourBeginConsultation().toString());
+                else
+                    jsonConsultation.addProperty("beginH", "");
+                if(c.getHourEndConsultation() != null)
+                    jsonConsultation.addProperty("endH", c.getHourEndConsultation().toString());
+                else
+                    jsonConsultation.addProperty("endH", "");
                 
                 jsonConsultations.add(c.getId().toString(),jsonConsultation);
             }
