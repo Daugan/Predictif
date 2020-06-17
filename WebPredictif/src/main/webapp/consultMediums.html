@@ -20,14 +20,6 @@ and open the template in the editor.
                 white-space: normal
 
             }
-            /*p{
-                word-wrap: break-word;
-            }
-            .a {
-            width: 250px; 
-            height:auto;
-            border: 1px solid #000000;
-          }*/
         </style>
     </head>
     <body>
@@ -37,19 +29,11 @@ and open the template in the editor.
             
         </div>
         <div id="containerMedium" class='w3-container'> 
-            <div class="w3-button w3-deep-purple w3-hover-purple w3-round w3-half">
-                <p style="text-align: center">Necromancien</p>
-                <img src = "Images/femme.png" alt="presentation d'un médium" style="max-width:100%">
-                <div> 
-                    <p>je suis bien ffffffffffff fffffffff fffffffffffffffffff ffffff ffffffffffff  ffffffffffffffffffffffffff ffffffffffffffffffff</p>
-                </div>
-                <img src = "Images/medium_name.png" alt="presentation d'un médium" style="max-width:100%">
-            </div>
-
         </div>
     
             <script>
                 $(document).ready( function () {
+
                         // Appel AJAX
                         $.ajax({
                             url: './ActionServlet',
@@ -63,23 +47,52 @@ and open the template in the editor.
                             console.log(response);
                             $.each(response, function(key, value) {
                                 //construction de la div medium
-                                let url = "WebPredictif/../Images/";
+                                let url = "Images/";
                                 if(value.gender === "M")
                                     url += "homme.png";
                                 else
                                     url += "femme.png";
                                 //div medium qu'on append au body
-                                $("<div>", {class: "medium"})
-                                        .click(function(){
-                                            
-                                })
-                                        .append($("<p>", {class: "type"}).html(value.type))
-                                        .append($("<img>", {class: "image", src: url}))
-                                        .append($("<p>", {class: "presentation"}).html(value.presentation))
-                                        .append($("<p>", {class: "denomination"}).html(value.denomination))
-                                        .appendTo("#containerMedium");
+                                $("<div>", {class: "w3-button w3-deep-purple w3-hover-purple w3-round w3-half"})
+                                    .append($("<p>", {class: "type",style:"text-align: center"}).html(value.type))
+                                    .append($("<img>", {class: "image", src: url,alt:"presentation d'un médium", style:"max-width:100%"}))
+                                    .append($("<p>", {class: "presentation"}).html(value.presentation))
+                                    .append($("<p>", {class: "denomination"}).html(value.denomination))
+                            //<img src = "Images/medium_name.png" alt="presentation d'un médium" style="max-width:100%">
+                                    .click(function(){
+                                        let modalParent = $("<div>", {class: "modalParent-consultation"})
+                                                        .appendTo("body")
+                                                        .css({"position" : "fixed", "overflow" : "auto", "top" : "0px", "left" : "0px", "height" : "100%", "width" : "100%", "background-color" : "rgba(0,0,0,0.5)", "z-index" : "10"})
+                                             
+                                        let modal = $("<div>", {class: "modal-consultation"})
+                                                        .append($("<p>").html("Valider la reservation avec " + value.denomination))
+                                                        .append($("<button>", {id : "valider"}).html("Valider")
+                                                                .click(function(){
+                                                                    callAjaxAskConsultation(key);
+                                                                }))
+                                                        .append($("<button>", {id : "annuler"}).html("Annuler")
+                                                                .click(function(){
+                                                                    modalParent.remove();
+                                                                }))
+                                                        .append($("<div>", {id : "btnfermer"})
+                                                                .html("X")
+                                                                .css({"position" : "absolute", "top":"20px", "right":"20px"}))
+                                                                .click(function(){
+                                                                    modalParent.remove();
+                                                                })
+                                                        .css({"border" : "solid 2px red"})
+                                                        .appendTo(modalParent)
+                                        
+                                    
+                                        document.querySelector("body").addEventListener("keydown", function (e) {
+                                        if (e.key === "Escape")
+                                            modalParent.remove();
+                                        });
+                                    })
+                                    .appendTo("#containerMedium");
+                            });
                         })
-                        .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
                             console.log('Error',error); // LOG dans Console Javascript
                             alert("Erreur lors de l'appel AJAX");
                         })
@@ -87,6 +100,33 @@ and open the template in the editor.
 
                         });
                     });
+                    
+                function callAjaxAskConsultation(idMedium) {
+                    // Appel AJAX
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'askConsultation',
+                            idMedium: idMedium
+                        },
+                        dataType: 'json'
+                    })
+                    .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log(response);
+                        if(response.success)
+                            $('#notification').html("Reservation de la consultation effectuée")
+                        else
+                            $('#notification').html("Impossible de prendre une consultation pour le moments. Veuillez réessayer plus tard")
+                    })
+                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error',error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+                    .always( function () { // Fonction toujours appelée
+                        
+                    });
+                }
             </script>
     </body>
     
