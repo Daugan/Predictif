@@ -1,5 +1,0 @@
-Controller\ActionServlet.class
-Action\AuthenticateClientAction.class
-Serialization\ClientProfileSerialization.class
-Action\Action.class
-Serialization\Serialization.class

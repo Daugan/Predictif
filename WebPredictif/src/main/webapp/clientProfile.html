@@ -29,24 +29,6 @@ and open the template in the editor.
             </p>
 
             <p>Historique des consultations</p>
-            
-            <table>
-                <tr>
-                  <th>Date de la consultation</th>
-                  <th>Medium</th>
-                  <th>Heure de début</th>
-                  <th>Heure de fin</th>
-                </tr>
-                <tr>
-                  <td id = "dateConsultation"></td>
-                  <td id = "nomMedium"></td>
-                  <td id = "hDebut"></td>
-                  <td id = "hFin"></td>
-                </tr> 
-            </table>
-            
-            <button><a href="consultMediums.html">Demander une consultation</a></button>
-
         <!--<div>TODO write content
         //recuperer idclient ajax pour json</div>-->
          <script>
@@ -68,10 +50,28 @@ and open the template in the editor.
                             $('#chinois').html(client.profilAstral.chinese);
                             $('#porte-bonheur').html(client.profilAstral.color);
                             $('#Animal-totem').html(client.profilAstral.animal);
-                            /*$('#dateConsultation').html(client.dateConsultation);
-                            $('#nomMedium').html(client.nomMedium);
-                            $('#hDebut').html(client.hDebut);
-                            $('#hFin').html(client.hFin);
+                            
+                            var table = $("<table>",{class: "historique"});
+                            
+                            var rowH = $("<tr>")
+                            rowH.append($("<th>").html("Date"));                            
+                            rowH.append($("<th>").html("Médium"));
+                            rowH.append($("<th>").html("Heure de début"));
+                            rowH.append($("<th>").html("Heure de fin"));    
+                            
+                            table.append(rowH);                            
+                            
+                            $.each(response, function(key, value) {                                
+                                var row = $("<tr><td>").html(value.dateConsultation);
+                                row.append($("<td>").html(value.nomMedium));
+                                row.append($("<td>").html(value.hDebut));
+                                row.append($("<td>").html(value.hFin));
+                                table.append(row);
+                            });
+                            
+                            table.appendTo("body");                           
+        
+                            
                             //TODO : 1. boucler sur toute les consultations : client.consultations
                             //       https://stackoverflow.com/questions/2342371/jquery-loop-on-json-data-using-each
                             //       2. inserer dans le tableau des lignes avec les donnees : uneConsultation.askK, uneConsultation.medium, uneConsultation.beginH, uneConsultation.endH
