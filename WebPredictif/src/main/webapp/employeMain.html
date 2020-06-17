@@ -13,6 +13,7 @@ and open the template in the editor.
         <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
     <body>
+        <button id="button-disconnect">se deconnecter</button>
         <p><a href="statistics.html">Statistiques</a></p>
         <script>
             $(document).ready( function () {
@@ -36,7 +37,29 @@ and open the template in the editor.
                     .always( function () { // Fonction toujours appelée
                         
                     });
+                    
+                $("#button-disconnect").click(function() {
+                    // Appel AJAX
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'disconnect',
+                        },
+                        dataType: 'json'
+                    })
+                    .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        window.location = "authenticateEmploye.html";
+                    })
+                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error',error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+                    .always( function () { // Fonction toujours appelée
+                        
+                    });
                 });
+            });
         </script>
     </body>
 </html>
