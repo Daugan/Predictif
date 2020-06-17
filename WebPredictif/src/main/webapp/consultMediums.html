@@ -32,19 +32,22 @@ and open the template in the editor.
                             console.log(response);
                             $.each(response, function(key, value) {
                                 //construction de la div medium
-                                let url;
+                                let url = "WebPredictif/../Images/";
                                 if(value.gender === "M")
-                                    url = "homme.png";
+                                    url += "homme.png";
                                 else
-                                    url = "femme.png";
+                                    url += "femme.png";
                                 //div medium qu'on append au body
                                 $("<div>", {class: "medium"})
-                                        .append($("<p>", {class: "type"}).html(value.type))
-                                        .append($("<img>", {class: "image", href: url}))
-                                        .append($("<p>", {class: "presentation"}).html(value.presentation))
-                                        .append($("<p>", {class: "denomination"}).html(value.denomination))
+                                        .click(function(){
+                                            
+                                });
+                                        .append($("<p>", {class: "type"}).html(value.type));
+                                        .append($("<img>", {class: "image", href: url}));
+                                        .append($("<p>", {class: "presentation"}).html(value.presentation));
+                                        .append($("<p>", {class: "denomination"}).html(value.denomination));
                                         .appendTo("#containerMedium");
-
+                                        
                             });
 
                             
