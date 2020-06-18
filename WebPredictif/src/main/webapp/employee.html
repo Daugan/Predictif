@@ -112,11 +112,10 @@ and open the template in the editor.
                         });
 
                 $("#hint").click(function () {
-                    let modalParent = $("<div>", {class: "modalParent-prediction"})
+                    let modalParent = $("<div>", {class: "modalParent"})
                             .appendTo("body")
-                            .css({"position": "fixed", "overflow": "auto", "top": "0px", "left": "0px", "height": "100%", "width": "100%", "background-color": "rgba(0,0,0,0.5)", "z-index": "10"})
 
-                    let modal = $("<div>", {class: "modal-prediction"})
+                    let modal = $("<div>", {class: "w3-display-middle"})
                             .append($("<h2>").html("Generateur d'inspiration"))
                             .append($("<form>", {id: "form-prediction"})
                                     .append($("<label>", {for : "love"}).html("Amour"))
@@ -131,20 +130,22 @@ and open the template in the editor.
                                     .append($("<button>", {id: "quit-predictions"}).html("Quitter")
                                             .click(function () {
                                                 modalParent.remove();
+                                                modal.remove();
                                             })))
                             .append($("<div>", {id: "btnfermer"})
                                     .html("X")
                                     .css({"position": "absolute", "top": "20px", "right": "20px"})
                                     .click(function () {
                                         modalParent.remove();
+                                        modal.remove();
                                     }))
-                            .css({"border": "solid 2px red"})
-                            .appendTo(modalParent);
+                            .appendTo("body");
 
 
                     document.querySelector("body").addEventListener("keydown", function (e) {
                         if (e.key === "Escape")
                             modalParent.remove();
+                            modal.remove();
                     });
                 })
 

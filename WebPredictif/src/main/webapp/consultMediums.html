@@ -11,24 +11,15 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <style>
-            .w3-button.w3-deep-purple.w3-hover-purple {
-                width: 250px;
-                height: 600px;
-                margin: 15px;
-                word-wrap: break-word;
-                white-space: normal
-
-            }
-        </style>
+        <link rel="stylesheet" href="styleSheet.css">
     </head>
     <body>
         <div class="w3-container">
-            <p><span class="logo">Predict'IF</span></p>
-            <h1 style="text-align: center">Veuillez choisir un médium</h1>
-            
+            <p class="logo">Predict'IF</p>
+            <h1> ~ Veuillez choisir un médium ~ </h1>
         </div>
-        <div id="containerMedium" class='w3-container'> 
+        
+        <div id="containerMedium" class='w3-container'>
         </div>
     
             <script>
@@ -56,16 +47,15 @@ and open the template in the editor.
 
                                 $("<div>", {class: "w3-button w3-deep-purple w3-hover-purple w3-round w3-half"})
                                     .append($("<p>", {class: "type",style:"text-align: center"}).html(value.type))
-                                    .append($("<img>", {class: "image", src: url,alt:"presentation d'un médium", style:"max-width:100%"}))
+                                    .append($("<img>", {class: "image", src: url,alt:"presentation d'un médium", style:"width:100%"}))
                                     .append($("<p>", {class: "presentation"}).html(value.presentation))
-                                    .append($("<p>", {class: "denomination"}).html(value.denomination))
-                            //<img src = "Images/medium_name.png" alt="presentation d'un médium" style="max-width:100%">
+                                    //.append($("<img>", {class: "image", src: "Images/medium_name.png",alt:"dénomination d'un médium", style:"max-width:100%;z-index:1"}))
+                                    .append($("<div>", {class: "denomination"}).html(value.denomination))
                                     .click(function(){
-                                        let modalParent = $("<div>", {class: "modalParent-consultation"})
+                                        let modalParent = $("<div>", {class: "modalParent"})
                                                         .appendTo("body")
-                                                        .css({"position" : "fixed", "overflow" : "auto", "top" : "0px", "left" : "0px", "height" : "100%", "width" : "100%", "background-color" : "rgba(0,0,0,0.5)", "z-index" : "10"})
                                              
-                                        let modal = $("<div>", {class: "modal-consultation"})
+                                        let modal = $("<div>", {class: "w3-display-middle"})
                                                         .append($("<p>").html("Valider la reservation avec " + value.denomination))
                                                         .append($("<button>", {id : "valider"}).html("Valider")
                                                                 .click(function(){
@@ -74,20 +64,22 @@ and open the template in the editor.
                                                         .append($("<button>", {id : "annuler"}).html("Annuler")
                                                                 .click(function(){
                                                                     modalParent.remove();
+                                                                    modal.remove();
                                                                 }))
                                                         .append($("<div>", {id : "btnfermer"})
                                                                 .html("X")
                                                                 .css({"position" : "absolute", "top":"20px", "right":"20px"}))
                                                                 .click(function(){
                                                                     modalParent.remove();
+                                                                    modal.remove();
                                                                 })
-                                                        .css({"border" : "solid 2px red"})
-                                                        .appendTo(modalParent)
+                                                        .appendTo("body")
                                         
                                     
                                         document.querySelector("body").addEventListener("keydown", function (e) {
                                         if (e.key === "Escape")
                                             modalParent.remove();
+                                            modal.remove();
                                         });
                                     })
                                     .appendTo("#containerMedium");

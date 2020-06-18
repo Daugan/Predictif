@@ -12,14 +12,16 @@ and open the template in the editor.
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="styleSheet.css">        
     </head>
-    <body>
+    <body id="register">
 
         <div class ="row">
-            <div class="column">
+            <div class="column" style="width: 20%">
             </div>
+            <div class="column" style="width: 60%">
+            
             <form id="registerform" style="background-color:#8A2BE2;">  
                 <div class="row">
-                    <label>Veuillez renseigner les champs ci dessous : </label>
+                    <label class="arnaque2">Veuillez renseigner les champs ci dessous : </label>
                 </div><br/>
                 <div class="row">
                     <input type="text" id="name-input" placeholder="Nom" required/> <input type="text" id="surname-input" placeholder="Prénom" required/>
@@ -43,7 +45,7 @@ and open the template in the editor.
                     <input type="password" id="password-input" placeholder="mot de passe" required/>
                 </div><br/>
                 <div>
-                    <label for="civilite-input">Civilite</label>
+                    <label for="civilite-input" style="margin-left: 50px; color: #FFFFFF">Civilite</label>
                     <select id="civilite-input">
                         <option value="M">M</option>
                         <option value="MME">MME</option>
@@ -54,6 +56,9 @@ and open the template in the editor.
                     <button type="submit" id="button-signup">C'est parti !</button>
                 </div>
             </form>
+            </div>
+            <div class="column" style="width: 20%">
+            </div>
         </div>
         
         

@@ -12,8 +12,28 @@ and open the template in the editor.
   box-sizing: border-box;
 }
 
+
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #e6ccff;
+}
+
+h1 {
+    text-align: center;
+    color: #FFFFFF;
+    
+}
+
+h3 {
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.logo{
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-style: italic;
+    font-size: 35px;
+    color: #FFFFFF;
 }
 
 /* Style the header */
@@ -29,14 +49,13 @@ body {
   float: left;
   width: 33.33%;
   border-radius: 5px;
-  background-color: #f2f2f2;
   padding: 20px;
   /*height: 300px; *//* Should be removed. Only for demonstration */
 }
 
 /* Clear floats after the columns */
 .row:after {
-  content: "";
+  max-width: 30%;
   display: table;
   clear: both;
 }
@@ -70,17 +89,19 @@ label {
 }
 
 button[type=submit] {
-  background-color: #4CAF50;
-  color: white;
+
+
   padding: 12px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  float: right;
+
+    display: block;
+    margin : auto;
 }
 
 button[type=submit]:hover {
-  background-color: #45a049;
+  background-color: #e6ccff;
 }
 
 /*fin du formulaire responsive*/
@@ -103,9 +124,158 @@ tr:nth-child(even) {
 }
 
 /*fin tableau*/
+/*PARTIE CLIENT*/
+/* CONNEXION CLIENT */
+#index .accueil {
+    text-align: center;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-style: italic;
+    font-size: 80px;
+    color: #FFFFFF;
+    
+}
+#index .arnaque {
+     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+     font-style: italic;
+     font-size: 20px;
+     color: #8600b3;
+}
 
+.arnaque2 {
+    text-align: center;
+     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+     font-style: italic;
+     font-size: 30px;
+     color: #FFFFFF;
+}
 
-/*PARTIE ENMPLOYE*/
+#index p{
+    text-align: center;
+    color: #FFFFFF;
+}
+
+#index button{
+    display: block;
+    margin : auto;
+}
+/* FIN CONNEXION CLIENT */
+/* MAIN PAGE CLIENT */
+
+#client h1
+{
+    text-align: center;
+    margin: 50px;
+}
+#client #profile
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 80px;
+}
+
+#client #profile > div
+{
+    flex: 0 1 auto;
+}
+
+#client #profile > img
+{
+    flex: 0 0 auto;
+    margin: 20px;
+}
+#client #profile p
+{
+    border: solid 2px #8600b3;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 5px
+}
+.astral
+{
+    font-weight: bold;
+}
+
+.haut-gauche:after
+{
+    /*TODO : curver les coté du p */
+   
+}
+
+#client h3
+{
+    text-align: center;
+}
+
+#client table
+{
+    margin: auto;
+    
+}
+#client th 
+{
+    color: #FFFFFF;
+    text-align: center;
+    background-color: #8600b3;
+}
+#client tr
+{
+    background-color: #FFFFFF;
+}
+
+/* fin MAIN PAGE CLIENT */
+
+#register input{
+     width: 90%;
+     margin: auto;
+     display: block;
+}
+
+#register #civilite-input{
+     width: 90%;
+     margin: auto;
+     display: block;
+}
+/*page consultMedium*/
+
+.w3-button.w3-deep-purple.w3-hover-purple {
+    width: 250px;
+    height: 430px;
+    margin: 15px;
+    word-wrap: break-word;
+    white-space: normal;
+
+}
+
+.modalParent{
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: black;
+     z-index: 1;
+     opacity: 0.5;
+}
+
+.w3-display-middle
+{     
+     position: fixed;
+     left: 50%;
+     top: 50%;
+     z-index: 2000;
+     padding: 20px;
+     width: 560px;
+     background-color: #EEEEEE;
+     font-size: 12px;
+     line-height: 16px;
+     color: #202020;
+     border : 3px outset #800080;
+}
+
+/*FIN PARTIE CLIENT*/
+/*PARTIE EMPLOYE*/
 
 /*formulaire connexion employe*/
 
@@ -148,8 +318,10 @@ tr:nth-child(even) {
 {
     background-color: #56baed;
     width: 50%;
-    margin: auto;
     min-width: 150px;
+    display: block;
+    margin : auto;
+    
 }
 
 .signin button:hover
@@ -394,56 +566,3 @@ tr:nth-child(even) {
     }
 }
 /*fin PAGE STATISTICS*/
-
-/* MAIN PAGE CLIENT */
-
-#client h1
-{
-    text-align: center;
-    margin: 50px;
-}
-#client #profile
-{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 80px;
-}
-
-#client #profile > div
-{
-    flex: 0 1 auto;
-}
-
-#client #profile > img
-{
-    flex: 0 0 auto;
-    margin: 20px;
-}
-#client #profile p
-{
-    border: solid 2px black;
-    padding: 20px;
-}
-.astral
-{
-    font-weight: bold;
-}
-
-.haut-gauche:after
-{
-    /*TODO : curver les coté du p */
-}
-
-#client h3
-{
-    text-align: center;
-}
-
-#client table
-{
-    margin: auto;
-}
-
-/* fin MAIN PAGE CLIENT */
