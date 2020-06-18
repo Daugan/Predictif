@@ -104,19 +104,6 @@ tr:nth-child(even) {
 
 /*fin tableau*/
 
-.medium
-{
-    border: solid 2px red;
-    width: 300px;
-    margin: 50px;
-}
-
-#containerMedium
-{
-    display: flex;
-    flex-wrap: wrap;
-}
-
 
 /*PARTIE ENMPLOYE*/
 
