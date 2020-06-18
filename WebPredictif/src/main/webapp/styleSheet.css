@@ -192,12 +192,13 @@ tr:nth-child(even) {
     margin-top: 50px;
 }
 
-#employee #button-disconnect
+#employee #button-disconnect, #client #button-disconnect
 {
     position: absolute;
     width: 30px;
     top: 10px; 
     right: 35px;
+    cursor: pointer;
 }
 #link-statistics > img
 {
@@ -393,3 +394,56 @@ tr:nth-child(even) {
     }
 }
 /*fin PAGE STATISTICS*/
+
+/* MAIN PAGE CLIENT */
+
+#client h1
+{
+    text-align: center;
+    margin: 50px;
+}
+#client #profile
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 80px;
+}
+
+#client #profile > div
+{
+    flex: 0 1 auto;
+}
+
+#client #profile > img
+{
+    flex: 0 0 auto;
+    margin: 20px;
+}
+#client #profile p
+{
+    border: solid 2px black;
+    padding: 20px;
+}
+.astral
+{
+    font-weight: bold;
+}
+
+.haut-gauche:after
+{
+    /*TODO : curver les coté du p */
+}
+
+#client h3
+{
+    text-align: center;
+}
+
+#client table
+{
+    margin: auto;
+}
+
+/* fin MAIN PAGE CLIENT */

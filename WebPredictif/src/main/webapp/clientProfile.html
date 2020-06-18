@@ -12,75 +12,73 @@ and open the template in the editor.
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
-    <body>
+    <body id="client">
         <h1>Profil</h1>
-            <button id="button-signup"><a href="consultMediums.html">Demander une consultation</a></button>
-            <button id="button-disconnect">se deconnecter</button>
-            <p>Signe du zodiaque : 
-                <span id = "zodiaque"></span> <!--Morceau de texte à l'intérieur d'un texte != div : structure-->
-            </p>
-            <p>Signe astrologique chinois: 
-                <span id = "chinois"></span> 
-            </p>
-            <p>Couleur porte-bonheur : 
-                <span id = "porte-bonheur"></span> 
-            </p>
-            <p>Animal-totem : 
-                <span id = "Animal-totem"></span> 
-            </p>
+        <button id="button-signup"><a href="consultMediums.html">Demander une consultation</a></button>
+        <img id="button-disconnect" src="Images/iconsignout.png" alt="se deconnecter" title="se deconnecter"/>
+        <div id="profile">
+            <div>
+                <p class="haut-gauche">Signe du zodiaque : <span id = "zodiaque" class="astral"></span></p>
+                <p>Couleur porte-bonheur : <span id = "porte-bonheur" class="astral"></span></p>
+            </div>
+            <img src="Images/planete.png"/>
+            <div>
+                <p>Signe astrologique chinois: <span id = "chinois" class="astral"></span></p>
+                <p>Animal-totem : <span id = "Animal-totem" class="astral"></span> </p>
+            </div>
+        </div>
 
-            <p>Historique des consultations</p>
-        <!--<div>TODO write content
-        //recuperer idclient ajax pour json</div>-->
-         <script>
-            $(document).ready( function () {
-                    // Appel AJAX
-                    $.ajax({
-                        url: './ActionServlet',
-                        method: 'POST',
-                        data: {
-                            todo: 'profile',
-                        },
-                        dataType: 'json'
-                    })
-                    .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
-                        console.log('Response',response); // LOG dans Console Javascript
+        <h3>Historique des consultations</h3>
+
+        <script>
+            $(document).ready(function () {
+                // Appel AJAX
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: 'profile',
+                    },
+                    dataType: 'json'
+                })
+                        .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                            console.log('Response', response); // LOG dans Console Javascript
                             var client = response.client;
                             $('#zodiaque').html(client.profilAstral.zodiac);
                             $('#chinois').html(client.profilAstral.chinese);
                             $('#porte-bonheur').html(client.profilAstral.color);
                             $('#Animal-totem').html(client.profilAstral.animal);
-                            
-                            var table = $("<table>",{class: "historique"});
-                            
+
+                            var table = $("<table>", {class: "historique"});
+
                             var rowH = $("<tr>")
-                            rowH.append($("<th>").html("Date"));                            
+                            rowH.append($("<th>").html("Date"));
                             rowH.append($("<th>").html("Médium"));
                             rowH.append($("<th>").html("Heure de début"));
-                            rowH.append($("<th>").html("Heure de fin"));    
-                            
-                            table.append(rowH);                            
-                            
-                            $.each(client.consultations, function(key, value) {                                
+                            rowH.append($("<th>").html("Heure de fin"));
+
+                            table.append(rowH);
+
+                            $.each(client.consultations, function (key, value) {
                                 var row = $("<tr><td>").html(value.askH);
                                 row.append($("<td>").html(value.medium));
                                 row.append($("<td>").html(value.beginH));
                                 row.append($("<td>").html(value.endH));
                                 table.append(row);
                             });
-                            
-                            table.appendTo("body");                           
-        
-                    })
-                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
-                        console.log('Error',error); // LOG dans Console Javascript
-                        alert("Erreur lors de l'appel AJAX");
-                    })
-                    .always( function () { // Fonction toujours appelée
-                        
-                    });
-                    
-                $("#button-disconnect").click(function() {
+
+                            table.appendTo("body");
+
+                        })
+                        .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                            console.log('Error', error); // LOG dans Console Javascript
+                            alert("Erreur lors de l'appel AJAX");
+                        })
+                        .always(function () { // Fonction toujours appelée
+
+                        });
+
+                $("#button-disconnect").click(function () {
                     // Appel AJAX
                     $.ajax({
                         url: './ActionServlet',
@@ -90,16 +88,16 @@ and open the template in the editor.
                         },
                         dataType: 'json'
                     })
-                    .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
-                        window.location = "index.html";
-                    })
-                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
-                        console.log('Error',error); // LOG dans Console Javascript
-                        alert("Erreur lors de l'appel AJAX");
-                    })
-                    .always( function () { // Fonction toujours appelée
-                        
-                    });
+                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                                window.location = "index.html";
+                            })
+                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                                console.log('Error', error); // LOG dans Console Javascript
+                                alert("Erreur lors de l'appel AJAX");
+                            })
+                            .always(function () { // Fonction toujours appelée
+
+                            });
                 });
             });
         </script>
