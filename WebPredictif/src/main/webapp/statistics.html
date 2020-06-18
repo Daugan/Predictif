@@ -11,35 +11,125 @@ http://localhost:8080/IHM/authenticateClient.html
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
         <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
-    <body>
-        <h1>Les chiffres du mois</h1>
-        
+    <body id="statistics">
+        <h1>Les chiffres de l'entreprise</h1>
+        <p id="notification"></p>
+
+        <div id="container-stats">
+            <div id="medium-stats">
+                <canvas id="mediumChart"></canvas>
+            </div>
+            <div id="employee-stats">
+                <h3>Répartition des consultations par employées</h3>
+                <table>
+                    <tr>
+                        <th>Employe</th>
+                        <th>Client</th>
+                        <th>Nombre de consultation</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
         <script>
-            $(document).ready( function () {
-                
-                    // Appel AJAX
-                    $.ajax({
-                        url: './ActionServlet',
-                        method: 'POST',
-                        data: {
-                            todo: 'statistic',
-                        },
-                        dataType: 'json'
-                    })
-                    .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
-                        console.log("wsh la team");
-                        console.log(response);
-                    })
-                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
-                        console.log('Error',error); // LOG dans Console Javascript
-                        alert("Erreur lors de l'appel AJAX");
-                    })
-                    .always( function () { // Fonction toujours appelée
-                        
-                    });
+            $(document).ready(function () {
+
+                // Appel AJAX
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: 'statistic',
+                    },
+                    dataType: 'json'
+                })
+                        .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                            console.log(response);
+                            generateMediumChart(response.statsMediums);
+                            generateEmployeeTable(response.statsEmployee);
+                        })
+                        .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                            console.log('Error', error); // LOG dans Console Javascript
+                            alert("Erreur lors de l'appel AJAX");
+                        })
+                        .always(function () { // Fonction toujours appelée
+
+                        });
+            });
+
+            function generateMediumChart(stats)
+            {
+                var ctx = $("#mediumChart");
+                var labels = [];
+                var dataValues = [];
+                $.each(stats, function (key, value) {
+                    labels.push(value.denomination);
+                    dataValues.push(value.nbConsultations);
                 });
+
+                var dataChart = {
+                    labels: labels,
+                    datasets: [{
+                            label: 'Nombre de consultation',
+                            backgroundColor: "rgba(255,99,132, 0.5)",
+                            borderColor: "rgb(255,99,132)",
+                            borderWidth: 1,
+                            data: dataValues
+                        }]
+
+                };
+
+                var myBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: dataChart,
+                    options: {
+                        // Elements options apply to all of the options unless overridden in a dataset
+                        // In this case, we are setting the border of each horizontal bar to be 2px wide
+                        elements: {
+                            rectangle: {
+                                borderWidth: 2,
+                            }
+                        },
+                        responsive: false,
+                        legend: {
+                            position: 'right',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Nombre de consultation par medium'
+                        }
+                    }
+                });
+            }
+
+            function generateEmployeeTable(stats)
+            {
+                var table = $("table");
+                console.log(table);
+                $.each(stats, function (idEmployee, employee) {
+                    let sum=0;
+                    let trTotal = $("<td>");
+                    table.append($("<tr>")
+                            .append($("<td>").html(employee.firstname + " " + employee.lastname))
+                            .append($("<td>").css({"background-color": "rgb(78,78,78)"}))
+                            .append(trTotal));
+
+                    $.each(employee.clients, function (idClient, client) {
+                        table.append($("<tr>")
+                                .append($("<td>").css({"background-color": "rgb(78,78,78)"}))
+                                .append($("<td>").html(client.firstname + " " + client.lastname))
+                                .append($("<td>").html(client.nbConsultations)));
+
+                        sum += client.nbConsultations;     
+                    });
+                    
+                    trTotal.html("Total : " + sum);
+                    
+                });
+            }
         </script>
     </body>
 </html>

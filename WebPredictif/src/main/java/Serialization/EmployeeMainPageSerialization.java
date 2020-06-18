@@ -32,14 +32,15 @@ public class EmployeeMainPageSerialization extends Serialization {
         {
             //a consultation is in progress
             container.addProperty("consultation", true);
+            container.addProperty("disponibility", consultation.getEmployee().isDisponibility());
             
             //set client json object
             Client client = consultation.getClient();
             List<Consultation> consultations = client.getConsultations();
             
             JsonObject jsonClient = new JsonObject();
-            jsonClient.addProperty("nom", client.getLastName());
-            jsonClient.addProperty("prenom", client.getFirstName());
+            jsonClient.addProperty("lastname", client.getLastName());
+            jsonClient.addProperty("firstname", client.getFirstName());
             JsonObject jsonProfilAstral = new JsonObject();
             jsonProfilAstral.addProperty("zodiac", client.getProfilAstral().getZodiacSymbol());
             jsonProfilAstral.addProperty("color", client.getProfilAstral().getLuckyColor());

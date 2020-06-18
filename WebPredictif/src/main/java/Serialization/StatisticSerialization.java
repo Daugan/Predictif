@@ -76,7 +76,7 @@ public class StatisticSerialization extends Serialization {
         }
        
         container.add("statsMediums", jsonStatsMediums);
-        container.add("statisEmployee", jsonStatsEmployee);
+        container.add("statsEmployee", jsonStatsEmployee);
 
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();

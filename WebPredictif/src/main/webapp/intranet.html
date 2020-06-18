@@ -12,41 +12,31 @@ and open the template in the editor.
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
-      <body>
-          <div class ="row">
-              <h1 style="text-align:center;">Intranet Predict'IF</h1>
-          </div>
-        <div class ="row">
-            <div class="column">
-            </div>
-            <div class="column" style="background-color:#8A2BE2;">
-                    
+        <body>
+            <h1 style="text-align:center;">Intranet Predict'IF</h1>
+            <form class="signin">
+                <img src="Images/iconuser.png" class="signin-img"/>
                 <div class="row">
-                    <label>Identifiant: </label>
-                </div>
-
-                <div class="row">
-                    <input type="text" id="champ-mail" placeholder="exemple@mail.com"/>
+                    <input type="text" id="champ-mail" placeholder="Mail"/>
                 </div>
                 <div class="row">
-                    <label>Mot de passe: </label>
-                </div>
-                <div class="row">
-                    <input type="password" id="champ-password" placeholder="mot de passe"/>
+                    <input type="password" id="champ-password" placeholder="Mot de passe"/>
                 </div>
                 <p id="notification"></p>
-                <div class="row">
-                    <button id="button-signin">Se connecter</button>
-                </div>
-            </div>
-            <div class="column">
-            </div>
-        </div>
+               
+                <button type="submit" id="button-signin">Se connecter</button>
+                
+                
+                <p class="forgot-password"><a href="#">Mot de passe oublié ?</a></p>
+            </form>
 
-         <script>
+        <script>
             $(document).ready( function () {
-                $('#button-signin').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
-
+                $('.signin').submit(function (event) { // Fonction appelée lors du clic sur le bouton
+                    
+                    event.preventDefault();
+                    
+                    $('#notification').removeClass("error");
                     $('#notification').html("Connexion..."); // Message pour le paragraphe de notification
 
                     // Récupération de la valeur des champs du formulaire
@@ -70,6 +60,7 @@ and open the template in the editor.
                             window.location = "employeMain.html";
                         }
                         else {
+                            $('#notification').addClass("error");
                             $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification
                             //message d'erreur
                         }

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Predict'IF - intranet</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="styleSheet.css">
+    </head>
+    <body id="employee">
+        <h1>Predict'IF</h1>
+        <p id="notification"></p>
+
+        <p id="disponibility"></p>
+        <img id="button-disconnect" src="Images/iconsignout.png" alt="se deconnecter" title="se deconnecter"/>
+        <a href="statistics.html" id="link-statistics"><img src="Images/iconstats.png" alt="statistiques" title="statistiques"/></a>
+        <div class="employee-container">
+            <div id="employee-input">
+                <p id="info-consultation1"></p>
+                <p id="info-consultation2"></p>
+                <div>
+                    <button id="button-ready">Prêt pour la consultation !</button>
+                    <img id="hint" src="Images/iconhint.png" alt="hint" />
+                </div>
+                <form id="form-consultation">
+                    <label for="comment">Commentaire</label>
+                    <textarea id="comment" required rows="10"></textarea>
+                    <button type="submit">Fin de consultation</button>
+                </form>
+            </div>
+
+            <div id="client-profile">
+                <h3 id="client-name"></h3>
+                <div id="detail-profile">
+                    <div>
+                        <p>Signe du zodiaque : <span id = "zodiaque" class='data'></span></p>
+                        <p>Signe astrologique chinois: <span id = "chinois" class='data'></span> </p>
+                        <p>Couleur porte-bonheur : <span id = "porte-bonheur" class='data'></span> </p>
+                        <p>Animal-totem : <span id = "Animal-totem" class='data'></span> </p>
+                    </div>
+                    <img src="Images/planete.png" alt="planete"/>
+                </div>
+                <div class="separator"></div>
+                <p>Historique des consultations</p>
+                <div class="table-container">
+                    <table class="historique">
+                        <tr>
+                            <th>Date</th>
+                            <th>Medium</th>
+                            <th>Début</th>
+                            <th>Fin</th>
+                            <th>Commentaire</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+
+                // Appel AJAX
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: 'employee',
+                    },
+                    dataType: 'json'
+                })
+                        .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+
+                            if (response.consultation)
+                            {
+                                $("#info-consultation1").html("Consultation en cours");
+                                $("#info-consultation2").html("Medium à incarner : <span class='data'>" + response.medium + "</span>");
+
+                                $("#disponibility").html("Indisponible").addClass("unavailable");
+
+                                $("#client-name").html(response.client.firstname + " " + response.client.lastname);
+                                $('#zodiaque').html(response.client.profilAstral.zodiac);
+                                $('#chinois').html(response.client.profilAstral.chinese);
+                                $('#porte-bonheur').html(response.client.profilAstral.color);
+                                $('#Animal-totem').html(response.client.profilAstral.animal);
+
+                                $.each(response.client.consultations, function (key, value) {
+                                    $(".historique").append($("<tr>")
+                                            .append($("<td>").html(value.askH))
+                                            .append($("<td>").html(value.medium))
+                                            .append($("<td>").html(value.beginH))
+                                            .append($("<td>").html(value.endH))
+                                            .append($("<td>").html(value.comment)));
+                                });
+                            } else
+                            {
+                                $("#info-consultation1").html("Aucune consultation en cours");
+                                $("#disponibility").html("Disponible").addClass("available");
+                            }
+
+                        })
+                        .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                            console.log('Error', error); // LOG dans Console Javascript
+                            alert("Erreur lors de l'appel AJAX");
+                        })
+                        .always(function () { // Fonction toujours appelée
+
+                        });
+
+                $("#hint").click(function () {
+                    let modalParent = $("<div>", {class: "modalParent-prediction"})
+                            .appendTo("body")
+                            .css({"position": "fixed", "overflow": "auto", "top": "0px", "left": "0px", "height": "100%", "width": "100%", "background-color": "rgba(0,0,0,0.5)", "z-index": "10"})
+
+                    let modal = $("<div>", {class: "modal-prediction"})
+                            .append($("<h2>").html("Generateur d'inspiration"))
+                            .append($("<form>", {id: "form-prediction"})
+                                    .append($("<label>", {for : "love"}).html("Amour"))
+                                    .append($("<input>", {id: "love", type: "number", required: true}))
+                                    .append($("<label>", {for : "health"}).html("Santé"))
+                                    .append($("<input>", {id: "health", type: "number"}))
+                                    .append($("<label>", {for : "work"}).html("Travail"))
+                                    .append($("<input>", {id: "work", type: "number"}))
+                                    .append($("<button>", {id: "submit-prediction"}).html("C'est parti!")
+                                            .click(function () {
+                                            }))
+                                    .append($("<button>", {id: "quit-predictions"}).html("Quitter")
+                                            .click(function () {
+                                                modalParent.remove();
+                                            })))
+                            .append($("<div>", {id: "btnfermer"})
+                                    .html("X")
+                                    .css({"position": "absolute", "top": "20px", "right": "20px"})
+                                    .click(function () {
+                                        modalParent.remove();
+                                    }))
+                            .css({"border": "solid 2px red"})
+                            .appendTo(modalParent);
+
+
+                    document.querySelector("body").addEventListener("keydown", function (e) {
+                        if (e.key === "Escape")
+                            modalParent.remove();
+                    });
+                })
+
+                $("#button-disconnect").click(function () {
+                    // Appel AJAX
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'disconnect'
+                        },
+                        dataType: 'json'
+                    })
+                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                                window.location = "authenticateEmploye.html";
+                            })
+                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                                console.log('Error', error); // LOG dans Console Javascript
+                                alert("Erreur lors de l'appel AJAX");
+                            })
+                            .always(function () { // Fonction toujours appelée
+
+                            });
+                });
+
+                $("#button-ready").click(function () {
+                    // Appel AJAX
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'beginConsultation'
+                        },
+                        dataType: 'json'
+                    })
+                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                                console.log(response);
+                                if (response.success)
+                                {
+
+                                } else
+                                {
+                                    $('#notification').html("Impossible de commencer la consultation").addClass("error");
+                                }
+                            })
+                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                                console.log('Error', error); // LOG dans Console Javascript
+                                alert("Erreur lors de l'appel AJAX");
+                            })
+                            .always(function () { // Fonction toujours appelée
+
+                            });
+                })
+
+                $('#form-consultation').submit(function (event) { // Fonction appelée lors du submit du formulaire
+
+                    event.preventDefault();
+
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'endConsultation'
+                        },
+                        dataType: 'json'
+                    })
+                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                                console.log(response);
+                                if (response.success)
+                                {
+
+                                } else
+                                {
+                                    $('#notification').html("Impossible de terminer la consultation.");
+                                }
+                            })
+                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                                console.log('Error', error); // LOG dans Console Javascript
+                                alert("Erreur lors de l'appel AJAX");
+                            })
+                            .always(function () { // Fonction toujours appelée
+
+                            });
+                });
+            });
+        </script>
+    </body>
+</html>

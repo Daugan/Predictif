@@ -82,6 +82,7 @@ button[type=submit] {
 button[type=submit]:hover {
   background-color: #45a049;
 }
+
 /*fin du formulaire responsive*/
 
 /*tableau*/
@@ -115,3 +116,293 @@ tr:nth-child(even) {
     display: flex;
     flex-wrap: wrap;
 }
+
+
+/*PARTIE ENMPLOYE*/
+
+/*formulaire connexion employe*/
+
+.signin
+{
+    width: 50%;
+    max-width: 500px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 3px 3px rgba(0,0,0,0.2);
+    padding: 20px;
+    
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.signin input
+{
+    background-color: #f6f6f6;
+    border: none;
+    color: #0d0d0d;
+    text-align: center;
+    font-size: 16px;
+    border: 2px solid #f6f6f6
+}
+
+.signin-img
+{
+    display: block;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100px;
+    text-align: center;
+    margin-bottom: 10px;
+    
+}
+
+.signin button
+{
+    background-color: #56baed;
+    width: 50%;
+    margin: auto;
+    min-width: 150px;
+}
+
+.signin button:hover
+{
+    background-color: #39ace7;
+}
+
+.signin .row
+{
+    margin: 20px 20px 0 20px;
+}
+
+.signin p
+{
+    text-align: center;
+}
+
+.forgot-password
+{
+    margin-top: 50px;
+}
+
+.forgot-password a
+{
+    text-decoration: none;
+}
+
+.error
+{
+    color: red;
+}
+
+/*fin formulaire connexion employe*/
+
+
+/*MAIN PAGE EMPLOYEE*/
+#employee h1
+{
+    text-align: center;
+    margin-top: 50px;
+}
+
+#employee #button-disconnect
+{
+    position: absolute;
+    width: 30px;
+    top: 10px; 
+    right: 35px;
+}
+#link-statistics > img
+{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 30px;
+}
+#employee #notification
+{
+    margin-top: 50px;
+    text-align: center;
+}
+#disponibility
+{
+    position: absolute;
+    top: 40px;
+    right: 10px;
+}
+
+.available:before
+{
+    content: '';
+    width: 13px;
+    height: 13px;
+    background-color: green;
+    border-radius: 50%;
+    position: absolute;
+    left: -20%;
+    top: 10%;
+}
+
+.unavailable:before
+{
+    content: '';
+    width: 13px;
+    height: 13px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    left: -20%;
+    top: 10%;
+}
+
+.employee-container
+{
+    display: flex;
+    justify-content: space-around;
+}
+
+#employee-input
+{
+    flex: 1 1 50%;
+    margin: 40px;
+}
+
+#employee-input > div
+{
+    margin-top: 50px;
+    display : flex;
+    align-items: center;
+}
+
+#employee-input #hint
+{
+    width: 30px;
+    height: auto;
+    margin-left: 20px;
+}
+
+#employee-input #info-consultation1
+{
+    text-align: center;
+    font-weight: bold;
+}
+
+#employee-input #info-consultation2
+{
+    text-align: center;
+}
+
+#employee-input #form-consultation button
+{
+    margin-top: 30px;
+}
+
+#employee-input #button-ready
+{
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#client-profile
+{
+    flex: 1 1 50%;
+    border: solid 2px black;
+    padding: 20px;
+    margin: 40px;
+}
+
+#client-profile > h3, #client-profile > p
+{
+    text-align: center;
+}
+
+#detail-profile
+{
+    display: flex;
+    justify-content: space-around;
+}
+
+.data
+{
+    font-weight: bold;
+}
+
+.separator
+{
+    height: 2px;
+    width: 80%;
+    background-color: black;
+    margin: 30px auto;
+}
+
+#employee .table-container
+{
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+#employee table
+{
+    margin: auto;
+}
+
+@media (max-width: 900px) {
+    .employee-container 
+    {
+        flex-direction: column;
+    }
+}
+
+/*fin MAIN PAGE EMPLOYEE*/
+
+/*PAGE STATISTICS*/
+
+#statistics h1
+{
+    text-align: center;
+    margin: 50px;
+}
+
+#container-stats
+{
+    display: flex;
+    align-items: center;
+}
+
+#mediumChart
+{
+    width: 100%; 
+    height: 100%;
+}
+
+#medium-stats
+{
+    min-width: 500px;
+    max-width: 1000px;
+    flex: 1 1 50%;
+    margin: 40px;
+}
+
+#employee-stats
+{
+    flex: 1 1 50%;
+    margin: 40px;
+    text-align: center;
+}
+
+#employee-stats table
+{
+    margin: auto;
+}
+
+@media (max-width: 1100px) {
+    #container-stats
+    {
+        flex-direction: column;
+    }
+}
+/*fin PAGE STATISTICS*/

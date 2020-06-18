@@ -1,13 +1,105 @@
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html>
     <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Predict'IF - login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
     <body>
-        <p>Welcome to Predict'if</p>
-        <p><a href="authenticateClient.html">Connexion en tant que client</a></p>
-        <p><a href="authenticateEmploye.html">Connexion en tant qu'employee</a></p>
-        <!--<a href = "/actionServlet?action=login&mail=romain@gmail.com&password=1234"</a>-->
+        <div class="row">
+             <p>Trouvez la réponse à vos questions avec les médiums les plus reconnus de France. 
+           Nos spirites, cartomanciens et astrologues ont été sélectionnés avec la plus 
+           grande rigueur pour travailler avec précision, honnêteté et sérieux dans leur 
+           spécialité respective. Leurs prédictions personnalisées répondent à toutes les 
+           questions d’ordre sentimental, professionnel ou psychologique dans le plus strict 
+           respect de la déontologie.</p>
+        </div>
+        <div class ="row">
+            <div class="column">
+                Nos médiums
+            </div>
+            <div class="column" style="background-color:#8A2BE2;">
+                    
+                <div class="row">
+                    <label>Identifiant: </label>
+                </div>
+
+                <div class="row">
+                    <input type="text" id="champ-mail" placeholder="exemple@mail.com"/>
+                </div>
+                <div class="row">
+                    <label>Mot de passe: </label>
+                </div>
+                <div class="row">
+                    <input type="password" id="champ-password" placeholder="mot de passe"/>
+                </div>
+                <p id="notification"></p>
+                <div class="row">
+                    <button id="button-signin">Se connecter</button>
+                </div>
+                <div class="row">
+                     <p>Vous n'avez pas encore de compte ?</p>
+                </div>
+                <div class="row">
+                    <button id="button-signup"><a href="registerClient.html">S'inscrire</a></button>
+                </div>     
+            </div>
+            <div class="column">
+                Nos avis
+            </div>
+        </div>
+        
+        
+         <script>
+            $(document).ready( function () {
+                $('#button-signin').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
+
+                    console.log("clic sur le bouton de connexion"); // LOG dans Console Javascript
+                    $('#notification').html("Connexion..."); // Message pour le paragraphe de notification
+
+                    // Récupération de la valeur des champs du formulaire
+                    var champMail = $('#champ-mail').val();
+                    var champPassword = $('#champ-password').val();
+
+                    // Appel AJAX
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'connect',
+                            mail: champMail,
+                            password: champPassword
+                        },
+                        dataType: 'json'
+                    })
+                    .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('Response',response); // LOG dans Console Javascript
+                        if (response.connexion) {
+                            window.location = "clientProfile.html";
+                            var client = response.client;
+                            $('#notification').html("Connexion de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
+                        }
+                        
+                        else {
+                            $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification
+                        }
+                    })
+                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error',error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+                    .always( function () { // Fonction toujours appelée
+                        
+                    });
+                });
+            });
+        </script>
     </body>
 </html>
