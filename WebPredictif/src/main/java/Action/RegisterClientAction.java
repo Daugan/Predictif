@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -25,12 +24,12 @@ public class RegisterClientAction extends Action {
     public void execute(HttpServletRequest request) {
         
         Service service = new Service();
+        System.out.println("TAMERTAMER");
         
         //parameters
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //Date birthDate = sdf.parse(request.getParameter("birthDate"));
+        Date birthDate = Date.from(LocalDate.parse(request.getParameter("birthDate")).atStartOfDay(ZoneId.systemDefault()).toInstant());  
         String street = request.getParameter("street");
         String city = request.getParameter("city");
         int cp = Integer.valueOf(request.getParameter("cp"));
@@ -41,12 +40,10 @@ public class RegisterClientAction extends Action {
         Civilite civilite = Client.Civilite.M;
         
         if("MME".equals(strCivilite))
-            civilite = Client.Civilite.MME;
-            
-        Date birthDate = Date.from(LocalDate.of(1999,11,22).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            civilite = Client.Civilite.MME;  
+        System.out.println(birthDate.toString());
         Client client = new Client(surname, name, email, password, phone, birthDate, street, city, cp, civilite, true);
         boolean success = service.registerClient(client);
-        
         request.setAttribute("register", success);
         request.setAttribute("client", client);
 

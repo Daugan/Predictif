@@ -385,6 +385,11 @@ tr:nth-child(even) {
     margin-top: 50px;
     text-align: center;
 }
+
+#notification
+{
+    text-align: center;
+}
 #disponibility
 {
     position: absolute;

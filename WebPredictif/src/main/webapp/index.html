@@ -89,8 +89,6 @@ and open the template in the editor.
                                 console.log('Response', response); // LOG dans Console Javascript
                                 if (response.connexion) {
                                     window.location = "clientProfile.html";
-                                    var client = response.client;
-                                    $('#notification').html("Connexion de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
                                 } else {
                                     $('#notification').addClass("error");
                                     $('#notification').html("Mail ou mot de passe incorrect"); // Message pour le paragraphe de notification

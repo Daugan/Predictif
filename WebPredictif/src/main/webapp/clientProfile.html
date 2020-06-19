@@ -16,6 +16,7 @@ and open the template in the editor.
         <h1>Profil</h1>
         <button id="button-signup"><a href="consultMediums.html">Demander une consultation</a></button>
         <img id="button-disconnect" src="Images/iconsignout.png" alt="se deconnecter" title="se deconnecter"/>
+        <h3 id="nom-prenom-client"></h3>
         <div id="profile">
             <div>
                 <p class="haut-gauche">Signe du zodiaque : <span id = "zodiaque" class="astral"></span></p>
@@ -44,6 +45,7 @@ and open the template in the editor.
                         .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
                             console.log('Response', response); // LOG dans Console Javascript
                             var client = response.client;
+                            $("#nom-prenom-client").html(client.prenom + " " + client.nom);
                             $('#zodiaque').html(client.profilAstral.zodiac);
                             $('#chinois').html(client.profilAstral.chinese);
                             $('#porte-bonheur').html(client.profilAstral.color);

@@ -18,57 +18,58 @@ and open the template in the editor.
             <div class="column" style="width: 20%">
             </div>
             <div class="column" style="width: 60%">
-            
-            <form id="registerform" style="background-color:#8A2BE2;">  
-                <div class="row">
-                    <label class="arnaque2">Veuillez renseigner les champs ci dessous : </label>
-                </div><br/>
-                <div class="row">
-                    <input type="text" id="name-input" placeholder="Nom" required/> <input type="text" id="surname-input" placeholder="Prénom" required/>
-                </div><br/>
-                <div class="row">
-                     <input type="date" id="birth-input" placeholder="JJ/MM/AAAA" required/>
-                </div><br/>
-                <div class="row">
-                    <input type="text" id="street-input" placeholder="1, rue des rossignols" required/>
-                </div><br/>
-                <div class="row">
-                    <input type="text" id="city-input" placeholder="Ville" required/> <input type="number" id="CP-input" placeholder="Code Postal" required/>
-                </div><br/>
-                <div class="row">
-                    <input type="tel" id="phone-input" placeholder="01 23 45 67 89" required/>
-                </div><br/>
-                <div class="row">
-                    <input type="email" id="mail-input" placeholder="exemple@mail.com" required/>
-                </div><br/>
-                <div class="row">
-                    <input type="password" id="password-input" placeholder="mot de passe" required/>
-                </div><br/>
-                <div>
-                    <label for="civilite-input" style="margin-left: 50px; color: #FFFFFF">Civilite</label>
-                    <select id="civilite-input">
-                        <option value="M">M</option>
-                        <option value="MME">MME</option>
-                    </select>
-                </div>
-                <br/><br/>
-                <div class="row">
-                    <button type="submit" id="button-signup">C'est parti !</button>
-                </div>
-            </form>
+
+                <form id="registerform" style="background-color:#8A2BE2;">  
+                    <div class="row">
+                        <label class="arnaque2">Veuillez renseigner les champs ci dessous : </label>
+                    </div><br/>
+                    <div class="row">
+                        <input type="text" id="name-input" placeholder="Nom" required/> <input type="text" id="surname-input" placeholder="Prénom" required/>
+                    </div><br/>
+                    <div class="row">
+                        <input type="date" id="birth-input" placeholder="JJ/MM/AAAA" required/>
+                    </div><br/>
+                    <div class="row">
+                        <input type="text" id="street-input" placeholder="1, rue des rossignols" required/>
+                    </div><br/>
+                    <div class="row">
+                        <input type="text" id="city-input" placeholder="Ville" required/> <input type="number" id="CP-input" placeholder="Code Postal" required/>
+                    </div><br/>
+                    <div class="row">
+                        <input type="tel" id="phone-input" placeholder="01 23 45 67 89" required/>
+                    </div><br/>
+                    <div class="row">
+                        <input type="email" id="mail-input" placeholder="exemple@mail.com" required/>
+                    </div><br/>
+                    <div class="row">
+                        <input type="password" id="password-input" placeholder="mot de passe" required/>
+                    </div><br/>
+                    <div>
+                        <label for="civilite-input" style="margin-left: 50px; color: #FFFFFF">Civilite</label>
+                        <select id="civilite-input">
+                            <option value="M">M</option>
+                            <option value="MME">MME</option>
+                        </select>
+                    </div>
+                    <br/><br/>
+                    <p id="notification"></p>
+                    <div class="row">
+                        <button type="submit" id="button-signup">C'est parti !</button>
+                    </div>
+                </form>
             </div>
             <div class="column" style="width: 20%">
             </div>
         </div>
-        
-        
-         <script>
-            $(document).ready( function () {
+
+
+        <script>
+            $(document).ready(function () {
                 $('#registerform').submit(function (event) { // Fonction appelée lors du submit du formulaire
-                    
+
                     event.preventDefault();
-                    
-                    $('#notification').html("Insription en cours..."); // Message pour le paragraphe de notification
+
+                    $('#notification').html("Insription en cours...").removeClass('error'); // Message pour le paragraphe de notification
 
                     // Récupération de la valeur des champs du formulaire
                     var nameInput = $('#name-input').val();
@@ -81,47 +82,45 @@ and open the template in the editor.
                     var mailInput = $('#mail-input').val();
                     var passwordInput = $('#password-input').val();
                     var civilite = $('#civilite-input').val();
-                    
-                    console.log("wsh");
-                    
+
+
                     // Appel AJAX
                     $.ajax({
                         url: './ActionServlet',
                         method: 'POST',
                         data: {
                             todo: 'register',
-                            name : nameInput,
-                            surname : surnameInput,
-                            birthDate : birthInput,
-                            street : streetInput,
-                            city : cityInput,
-                            cp : cpInput,
-                            phone : phoneInput,
-                            email : mailInput,
-                            password : passwordInput
+                            name: nameInput,
+                            surname: surnameInput,
+                            birthDate: birthInput,
+                            street: streetInput,
+                            city: cityInput,
+                            cp: cpInput,
+                            phone: phoneInput,
+                            email: mailInput,
+                            password: passwordInput,
+                            civilite: civilite
                         },
                         dataType: 'json'
                     })
-                    .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
-                        console.log('Response',response); // LOG dans Console Javascript
-                        if (response.register) {
-                            window.location = "authenticateClient.html";
-                            alert("Inscription réussie");
-                            var client = response.client;
-                            $('#notification').html("inscription de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
-                        }
-                        else {
-                            $('#notification').html("Erreur d'inscription"); // Message pour le paragraphe de notification
-                            alert("Erreur lors de l'inscription - veuillez reesayer");
-                        }
-                    })
-                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
-                        console.log('Error',error); // LOG dans Console Javascript
-                        alert("Erreur lors de l'appel AJAX");
-                    })
-                    .always( function () { // Fonction toujours appelée
-                        
-                    });
+                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                                console.log('Response', response); // LOG dans Console Javascript
+                                if (response.register) {
+                                    $('#notification').html("inscription réussie");  // Message pour le paragraphe de notification
+                                    setTimeout(function () {
+                                        window.location = "index.html";
+                                    }, 2000);
+                                } else {
+                                    $('#notification').html("Erreur lors de linscription").addClass('error'); // Message pour le paragraphe de notification
+                                }
+                            })
+                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                                console.log('Error', error); // LOG dans Console Javascript
+                                alert("Erreur lors de l'appel AJAX");
+                            })
+                            .always(function () { // Fonction toujours appelée
+
+                            });
                 });
             });
         </script>

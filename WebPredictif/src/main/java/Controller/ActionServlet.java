@@ -93,6 +93,7 @@ public class ActionServlet extends HttpServlet {
                 case "register":
                     action = new RegisterClientAction();
                     serialization = new RegisterClientSerialization();
+                    break;
                 case "intraConnect":
                     action = new AuthenticateEmployeeAction();
                     serialization = new AuthenticateEmployeeSerialization();

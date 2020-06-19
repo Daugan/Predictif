@@ -210,7 +210,7 @@ and open the template in the editor.
                                 console.log(response);
                                 if (response.success)
                                 {
-                                    $('#notification').html("Veuillez attendre l'appelle du client");
+                                    $('#notification').html("Veuillez attendre l'appel du client");
                                     $("#button-ready").unbind("click").css({"background-color": "gray", "color": "black"});
                                 } else
                                 {
@@ -230,12 +230,15 @@ and open the template in the editor.
 
                     event.preventDefault();
                     $('#notification').removeClass("error");
+                    
+                    console.log($("#comment").val());
 
-                    $.ajax({
+                   $.ajax({
                         url: './ActionServlet',
                         method: 'POST',
                         data: {
-                            todo: 'endConsultation'
+                            todo: 'endConsultation',
+                            comment: $("#comment").val()
                         },
                         dataType: 'json'
                     })
