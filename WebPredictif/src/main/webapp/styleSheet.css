@@ -261,10 +261,11 @@ tr:nth-child(even) {
 
 .w3-display-middle
 {     
-     position: fixed;
-     left: 50%;
+     position: absolute;
      top: 50%;
-     z-index: 2000;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     z-index: 10;
      padding: 20px;
      width: 560px;
      background-color: #EEEEEE;
@@ -351,7 +352,7 @@ tr:nth-child(even) {
 
 .error
 {
-    color: red;
+    color: red!important;
 }
 
 /*fin formulaire connexion employe*/
@@ -439,6 +440,7 @@ tr:nth-child(even) {
     width: 30px;
     height: auto;
     margin-left: 20px;
+    cursor: pointer;
 }
 
 #employee-input #info-consultation1
@@ -467,6 +469,11 @@ tr:nth-child(even) {
     cursor: pointer;
 }
 
+#employee-input .disable
+{
+    background-color: gray;
+}
+
 #client-profile
 {
     flex: 1 1 50%;
@@ -478,6 +485,12 @@ tr:nth-child(even) {
 #client-profile > h3, #client-profile > p
 {
     text-align: center;
+}
+
+#client-profile img
+{
+    max-width: 180px;
+    height: auto;
 }
 
 #detail-profile
@@ -515,6 +528,37 @@ tr:nth-child(even) {
     {
         flex-direction: column;
     }
+}
+
+#btnfermer
+{
+    position: absolute; 
+    top: 20px; 
+    right: 20px; 
+    cursor: pointer;
+}
+#modal-prediction
+{
+    display:none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+#form-prediction input
+{
+    width: 60px;
+}
+
+#form-prediction > div
+{
+    display: flex;
+    align-items: center;
+    margin: 20px;
 }
 
 /*fin MAIN PAGE EMPLOYEE*/
@@ -566,3 +610,12 @@ tr:nth-child(even) {
     }
 }
 /*fin PAGE STATISTICS*/
+
+/*PAGE MEDIUM*/
+
+#body-medium #notification
+{
+    text-align: center;
+}
+
+/* fin PAGE MEDIUM*/

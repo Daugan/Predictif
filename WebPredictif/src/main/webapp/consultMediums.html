@@ -13,9 +13,10 @@ and open the template in the editor.
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="styleSheet.css">
     </head>
-    <body>
+    <body id="body-medium">
         <div class="w3-container">
             <p class="logo">Predict'IF</p>
+            <p id="notification"></p>
             <h1> ~ Veuillez choisir un médium ~ </h1>
         </div>
         
@@ -46,7 +47,7 @@ and open the template in the editor.
                                 //div medium qu'on append au body
 
                                 $("<div>", {class: "w3-button w3-deep-purple w3-hover-purple w3-round w3-half"})
-                                    .append($("<p>", {class: "type",style:"text-align: center"}).html(value.type))
+                                    .append($("<p>", {class: "type", style:"text-align: center"}).html(value.type))
                                     .append($("<img>", {class: "image", src: url,alt:"presentation d'un médium", style:"width:100%"}))
                                     .append($("<p>", {class: "presentation"}).html(value.presentation))
                                     //.append($("<img>", {class: "image", src: "Images/medium_name.png",alt:"dénomination d'un médium", style:"max-width:100%;z-index:1"}))
@@ -68,11 +69,11 @@ and open the template in the editor.
                                                                 }))
                                                         .append($("<div>", {id : "btnfermer"})
                                                                 .html("X")
-                                                                .css({"position" : "absolute", "top":"20px", "right":"20px"}))
+                                                                .css({"position" : "absolute", "top":"20px", "right":"20px", "cursor" : "pointer"})
                                                                 .click(function(){
                                                                     modalParent.remove();
                                                                     modal.remove();
-                                                                })
+                                                                }))
                                                         .appendTo("body")
                                         
                                     
@@ -108,9 +109,9 @@ and open the template in the editor.
                     .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
                         console.log(response);
                         if(response.success)
-                            $('#notification').html("Reservation de la consultation effectuée")
+                            $('#notification').html("Reservation de la consultation effectuée");
                         else
-                            $('#notification').html("Impossible de prendre une consultation pour le moments. Veuillez réessayer plus tard")
+                            $('#notification').html("Impossible de prendre une consultation pour le moments. Nos serveurs sont surchargés de demande. Veuillez réessayer plus tard");
                     })
                     .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
                         console.log('Error',error); // LOG dans Console Javascript

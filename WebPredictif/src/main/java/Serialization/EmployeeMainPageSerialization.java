@@ -24,20 +24,19 @@ public class EmployeeMainPageSerialization extends Serialization {
 
     @Override
     public void serialize(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Consultation consultation = (Consultation)request.getAttribute("consultation");
-        
+        Consultation consultation = (Consultation) request.getAttribute("consultation");
+
         JsonObject container = new JsonObject();
-        
-        if(consultation != null)
-        {
+
+        if (consultation != null) {
             //a consultation is in progress
             container.addProperty("consultation", true);
             container.addProperty("disponibility", consultation.getEmployee().isDisponibility());
-            
+
             //set client json object
             Client client = consultation.getClient();
             List<Consultation> consultations = client.getConsultations();
-            
+
             JsonObject jsonClient = new JsonObject();
             jsonClient.addProperty("lastname", client.getLastName());
             jsonClient.addProperty("firstname", client.getFirstName());
@@ -49,46 +48,48 @@ public class EmployeeMainPageSerialization extends Serialization {
 
             jsonClient.add("profilAstral", jsonProfilAstral);
             container.add("client", jsonClient);
-            
+
             JsonObject jsonConsultations = new JsonObject();
-            
-            
-            for(Consultation c : consultations )
-            {
+
+            for (Consultation c : consultations) {
                 JsonObject jsonConsultation = new JsonObject();
                 jsonConsultation.addProperty("askH", c.getHourAskConsultation().toString());
                 jsonConsultation.addProperty("medium", c.getMedium().getDenomination());
-                if(c.getHourBeginConsultation() != null)
+                if (c.getHourBeginConsultation() != null) {
                     jsonConsultation.addProperty("beginH", c.getHourBeginConsultation().toString());
-                else
+                } else {
                     jsonConsultation.addProperty("beginH", "");
-                if(c.getHourEndConsultation() != null)
+                }
+
+                if (c.getHourEndConsultation() != null) {
                     jsonConsultation.addProperty("endH", c.getHourEndConsultation().toString());
-                else
+                } else {
                     jsonConsultation.addProperty("endH", "");
-                if(c.getComment() != null)
+                }
+
+                if (c.getComment() != null) {
                     jsonConsultation.addProperty("comment", c.getComment());
-                else
+                } else {
                     jsonConsultation.addProperty("comment", "");
-                
-                jsonConsultations.add(c.getId().toString(),jsonConsultation);
+                }
+
+                jsonConsultations.add(c.getId().toString(), jsonConsultation);
             }
-            
+
             jsonClient.add("consultations", jsonConsultations);
             container.add("client", jsonClient);
-            
+
             //set other json data
             container.addProperty("medium", consultation.getMedium().getDenomination());
-             if(consultation.getHourBeginConsultation() != null)
-                    container.addProperty("beginH", consultation.getHourBeginConsultation().toString());
-                else
-                    container.addProperty("beginH", "");
-        }
-        else
-        {
+            if (consultation.getHourBeginConsultation() != null) {
+                container.addProperty("beginH", consultation.getHourBeginConsultation().toString());
+            } else {
+                container.addProperty("beginH", "");
+            }
+            
+        } else {
             container.addProperty("consultation", false);
         }
-       
 
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
